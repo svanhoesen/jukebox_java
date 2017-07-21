@@ -1,2 +1,10 @@
+<<<<<<< HEAD
 /VanHoesen.docx
 /demoMediaPlayer/
+=======
+/controller_view/
+/demoMediaPlayer/
+/model/
+/persistence/
+/tests/
+>>>>>>> af2f3955b6871812b3ab35f83ff784408a98a957
