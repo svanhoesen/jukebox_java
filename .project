@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-<<<<<<< HEAD
-	<name>Jukebox</name>
-=======
 	<name>jukebox-middletonvanhoesen</name>
->>>>>>> af2f3955b6871812b3ab35f83ff784408a98a957
 	<comment></comment>
 	<projects>
 	</projects>
@@ -18,14 +14,16 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-<<<<<<< HEAD
-=======
 	<linkedResources>
+		<link>
+			<name>Middleton.docx</name>
+			<type>1</type>
+			<location>C:/Users/sams/Desktop/Middleton.docx</location>
+		</link>
 		<link>
 			<name>src/tests/Middleton.docx</name>
 			<type>1</type>
 			<location>C:/Users/sams/Desktop/Middleton.docx</location>
 		</link>
 	</linkedResources>
->>>>>>> af2f3955b6871812b3ab35f83ff784408a98a957
 </projectDescription>
