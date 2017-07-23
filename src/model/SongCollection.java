@@ -64,7 +64,7 @@ public class SongCollection extends ArrayList<Song> implements TableModel, Seria
 		else if (columnIndex == 1)
 			return currentSong.getSongTitle();
 		else
-			return currentSong.gettime();
+			return currentSong.getTime();
 	}
 
 	@Override

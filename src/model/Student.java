@@ -64,7 +64,7 @@ public class Student implements Serializable {
 	public void addPlayed(Song song) {
 		if (canPlay()) {
 			hasBeenPlayedToday.add(song);
-			timeAllowed -= song.gettime();
+			timeAllowed -= song.getTime();
 		}
 	}
 
