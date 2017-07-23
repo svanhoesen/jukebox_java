@@ -20,15 +20,5 @@
 			<type>1</type>
 			<location>C:/Users/sams/Desktop/Middleton.docx</location>
 		</link>
-		<link>
-			<name>src/controller_view/Middleton.docx</name>
-			<type>1</type>
-			<location>C:/Users/sams/Desktop/Middleton.docx</location>
-		</link>
-		<link>
-			<name>src/tests/Middleton.docx</name>
-			<type>1</type>
-			<location>C:/Users/sams/Desktop/Middleton.docx</location>
-		</link>
 	</linkedResources>
 </projectDescription>
