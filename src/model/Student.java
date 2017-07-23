@@ -1,5 +1,9 @@
 package model;
-
+/*
+ * Author: Steffan Van Hoesen and Anthony Middleton
+ * 
+ * Class Student: This is the class student names. Contain all the information that a student should have.
+ */
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;

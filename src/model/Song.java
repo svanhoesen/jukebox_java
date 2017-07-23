@@ -1,4 +1,9 @@
 package model;
+/*
+ * Author: Steffan Van Hoesen and Anthony Middleton
+ * 
+ * Class Song: This is the class song information. Contain all the information that a song should have.
+ */
 
 public class Song {
 	private String title;

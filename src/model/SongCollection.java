@@ -1,4 +1,9 @@
 package model;
+/*
+ * Author: Steffan Van Hoesen and Anthony Middleton
+ * 
+ * Class SongCollection: This is the class song information. Contain all the information that a song should have.
+ */
 
 import java.io.Serializable;
 import java.util.ArrayList;
