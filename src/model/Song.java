@@ -25,7 +25,7 @@ public class Song {
 		return artist;
 	}
 
-	public int gettime() {
+	public int getTime() {
 		return seconds;
 	}
 
