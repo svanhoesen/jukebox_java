@@ -1,7 +1,7 @@
 package model;
 
 public class Song {
-	String title;
+	private String title;
 	private int seconds;
 	private String artist;
 	private String fileName;
@@ -25,7 +25,7 @@ public class Song {
 		return artist;
 	}
 
-	public int gettime() {
+	public int getTime() {
 		return seconds;
 	}
 
@@ -34,7 +34,7 @@ public class Song {
 	}
 
 	public void PlayMe() {
-		// TODO Auto-generated method stub	
+		played--;
 	}
 
 	public Object timePlayedToday() {
@@ -44,7 +44,6 @@ public class Song {
 
 	public void pretendItsTomorrow() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	public boolean canBePlayedToday() {
