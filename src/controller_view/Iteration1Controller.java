@@ -2,6 +2,7 @@ package controller_view;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -42,6 +43,7 @@ public class Iteration1Controller extends Application {
 	hbox.setSpacing(10);
 	
 	hbox.getChildren().addAll(buttonSong1, buttonSong2);
+	hbox.setAlignment(Pos.CENTER);
 	all.setTop(hbox);
 	
     GridPane.setConstraints(accontName, 0, 0);
