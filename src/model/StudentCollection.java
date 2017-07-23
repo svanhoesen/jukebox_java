@@ -1,3 +1,9 @@
+/**
+ * The list of students that can login
+ *
+ * @author Steffan Van Hoesen & Anthony Middleton
+ */
+
 package model;
 
 import java.io.Serializable;
@@ -12,7 +18,7 @@ public class StudentCollection extends HashMap<String, Student> implements Seria
 		this.put("Ryan", new Student("Ryan", "4444"));
 	}
 
-	public boolean validateStudent(String id, String password) {
-		return get(id).getPassword().equals(password);
+	public boolean validateStudent(String userName, String password) {
+		return get(userName).getPassword().equals(password);
 	}
 }

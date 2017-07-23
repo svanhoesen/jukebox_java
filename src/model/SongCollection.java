@@ -1,3 +1,8 @@
+/**
+ * The track of songs that are able to be played
+ *
+ * @author Steffan Van Hoesen & Anthony Middleton
+ */
 package model;
 
 import java.io.Serializable;
@@ -64,7 +69,7 @@ public class SongCollection extends ArrayList<Song> implements TableModel, Seria
 		else if (columnIndex == 1)
 			return currentSong.getSongTitle();
 		else
-			return currentSong.gettime();
+			return currentSong.getTime();
 	}
 
 	@Override

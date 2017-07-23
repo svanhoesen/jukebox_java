@@ -1,3 +1,9 @@
+/**
+ * The class for Students keeps track of username, password, number of plays, and time remaining
+ *
+ * @author Steffan Van Hoesen & Anthony Middleton
+ */
+
 package model;
 
 import java.io.Serializable;
@@ -19,7 +25,6 @@ public class Student implements Serializable {
 	public Student() {
 		hasBeenPlayedToday = new ArrayList<Song>();
 		lastQueueTime = LocalDate.now();
-		lastQueueTime = lastQueueTime.minusYears(40);
 		timeAllowed = MAX_TIME;
 	}
 
@@ -28,7 +33,6 @@ public class Student implements Serializable {
 		this.password = password;
 		hasBeenPlayedToday = new ArrayList<Song>();
 		lastQueueTime = LocalDate.now();
-		lastQueueTime = lastQueueTime.minusYears(40);
 		timeAllowed = MAX_TIME;
 	}
 
@@ -54,17 +58,17 @@ public class Student implements Serializable {
 		final int SECONDS_PER_MINUTE = 60;
 
 		int sec = timeAllowed % SECONDS_PER_MINUTE;
-		int totalMin = timeAllowed / SECONDS_PER_MINUTE;
-		int min = totalMin % MINUTES_PER_HOUR;
-		int h = totalMin / MINUTES_PER_HOUR;
+		int totMin = timeAllowed / SECONDS_PER_MINUTE;
+		int min = totMin % MINUTES_PER_HOUR;
+		int h = totMin / MINUTES_PER_HOUR;
 
-		return "Total playing time left: " + h + " hours " + min + " minutes " + sec + " seconds";
+		return userName + " your remaining playing time is: " + h + " hours " + min + " minutes " + sec + " seconds";
 	}
 
 	public void addPlayed(Song song) {
 		if (canPlay()) {
 			hasBeenPlayedToday.add(song);
-			timeAllowed -= song.gettime();
+			timeAllowed -= song.getTime();
 		}
 	}
 
@@ -84,9 +88,4 @@ public class Student implements Serializable {
 			lastQueueTime = LocalDate.now().plusDays(1);
 		}
 	}
-
-	public String getAvailableSong() {
-		return userName + " can choose " + (3 - hasBeenPlayedToday.size()) + " song(s) today";
-	}
-
 }
