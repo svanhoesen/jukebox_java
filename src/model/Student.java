@@ -70,7 +70,7 @@ public class Student implements Serializable {
 		int min = totMin % MINUTES_PER_HOUR;
 		int h = totMin / MINUTES_PER_HOUR;
 
-		return userName + " your remaining playing time is: " + h + " hours " + min + " minutes " + sec + " seconds";
+		return "remaining playing time is: " + h + " hours " + min + " minutes " + sec + " seconds";
 	}
 
 	public void addPlayed(Song song) {
