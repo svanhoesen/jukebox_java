@@ -16,6 +16,11 @@ import java.util.HashMap;
 
 public class StudentCollection extends HashMap<String, Student> implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3771200739228547925L;
+
 	public StudentCollection() {
 		this.put("Chris", new Student("Chris", "1"));
 		this.put("Devon", new Student("Devon", "22"));

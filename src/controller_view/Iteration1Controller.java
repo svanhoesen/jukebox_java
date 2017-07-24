@@ -1,11 +1,14 @@
 package controller_view;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -57,7 +60,7 @@ public class Iteration1Controller extends Application {
     GridPane.setConstraints(pasword, 0, 1);
     grid.getChildren().add(pasword);
     
-    final TextField textFieldPW = new TextField();
+    final PasswordField textFieldPW = new PasswordField();
     textFieldPW.setPromptText("Enter your password.");
     GridPane.setConstraints(textFieldPW, 1, 1);
     grid.getChildren().add(textFieldPW);
@@ -70,6 +73,22 @@ public class Iteration1Controller extends Application {
     
     GridPane.setConstraints(logOut, 1, 4);
     grid.getChildren().add(logOut);
+    
+    login.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent e) {
+            if ((textFieldAccn.getText() != null && !textFieldAccn.getText().isEmpty())) {
+            }
+        }
+    });
+
+    logOut.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent e) {
+        	textFieldAccn.clear();
+        	textFieldPW.clear();
+        }
+    });
     
 	all.setCenter(grid);
 

@@ -16,6 +16,10 @@ import java.util.ArrayList;
 
 public class Student implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5458928616300964957L;
 	// The student can select up to three song everyday.
 	public final static int MAX_NUM_O_PLAYS = 3;
 	public final static int MAX_TIME = 1500 * 60;
@@ -83,6 +87,7 @@ public class Student implements Serializable {
 			hasBeenPlayedToday.clear();
 		}
 		return hasBeenPlayedToday.size() < MAX_NUM_O_PLAYS;
+
 	}
 
 	public void makeDateChange() {
@@ -91,5 +96,9 @@ public class Student implements Serializable {
 		else {
 			lastQueueTime = LocalDate.now().plusDays(1);
 		}
+	}
+	
+	public void timeLeft(Song song){
+
 	}
 }

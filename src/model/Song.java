@@ -1,27 +1,33 @@
 package model;
+
 /*
  * Author: Steffan Van Hoesen and Anthony Middleton
  * 
  * Class Song: This is the class song information. Contain all the information that a song should have.
  */
+import java.time.LocalDate;
+import java.util.GregorianCalendar;
+import java.util.Calendar;
 
 public class Song {
 	private String title;
 	private int seconds;
 	private String artist;
 	private String fileName;
+	private GregorianCalendar lastDate;
+	private GregorianCalendar curDate;
 	private int played;
 	private int maxPlay = 3;
-
 
 	public Song(String title, int seconds, String artist, String fileName) {
 		this.title = title;
 		this.seconds = seconds;
 		this.artist = artist;
 		this.fileName = fileName;
+		this.lastDate = new GregorianCalendar();
 		played = maxPlay;
 	}
-	
+
 	public String getSongTitle() {
 		return title;
 	}
@@ -39,20 +45,24 @@ public class Song {
 	}
 
 	public void PlayMe() {
+		this.curDate = new GregorianCalendar(GregorianCalendar.YEAR, GregorianCalendar.MONTH,
+				GregorianCalendar.DAY_OF_MONTH);
+		lastDate = curDate;
+		System.out.println(curDate.get(GregorianCalendar.MONTH));
 		played--;
 	}
 
-	public Object timePlayedToday() {
-		// TODO Auto-generated method stub
-		return null;
+	public int timePlayedToday() {
+		return maxPlay - played;
 	}
 
 	public void pretendItsTomorrow() {
-		// TODO Auto-generated method stub
+		lastDate.add(Calendar.DATE, 1);
+		played = maxPlay;
 	}
 
 	public boolean canBePlayedToday() {
-		if (played == 0){
+		if (played == 0) {
 			return false;
 		}
 		return true;

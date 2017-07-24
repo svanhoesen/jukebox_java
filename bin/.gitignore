@@ -1,5 +1,11 @@
 /demoMediaPlayer/
+<<<<<<< HEAD
 /controller_view/
 /model/
 /persistence/
 /tests/
+=======
+/tests/
+/controller_view/
+/model/
+>>>>>>> 3cfa8f904c63fc7d3beb2fc636200432326f3a87

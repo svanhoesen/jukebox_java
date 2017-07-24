@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
-
 import demoMediaPlayer.EOSEvent;
 import demoMediaPlayer.EOSListener;
 import demoMediaPlayer.MediaPlayer;
@@ -30,7 +29,6 @@ public class JukeBox extends Observable{
 	/**
 	 * setters
 	 */
-
 	public void setCurrentUserName(String userName) {
 		this.userName = userName;
 	}

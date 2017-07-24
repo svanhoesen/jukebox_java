@@ -18,6 +18,11 @@ import javax.swing.table.TableModel;
 
 public class SongCollection extends ArrayList<Song> implements TableModel, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5222553619917902727L;
+	
 	public static String baseDirect = System.getProperty("user.dir") + System.getProperty("file.separator")
 			+ "songfiles" + System.getProperty("file.separator");
 
@@ -54,7 +59,7 @@ public class SongCollection extends ArrayList<Song> implements TableModel, Seria
 	}
 
 	@Override
-	public Class getColumnClass(int columnIndex) {
+	public Class<?> getColumnClass(int columnIndex) {
 		if (columnIndex == 0 || columnIndex == 1)
 			return String.class;
 		else
