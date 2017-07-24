@@ -30,7 +30,6 @@ public class JukeBox extends Observable{
 	/**
 	 * setters
 	 */
-
 	public void setCurrentUserName(String userName) {
 		this.userName = userName;
 	}
