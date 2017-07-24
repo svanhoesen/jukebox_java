@@ -98,11 +98,11 @@ public class MP3Player extends Thread {
 					if (!EventQueue.isDispatchThread()) {
 						try {
 							EventQueue.invokeAndWait(new EndOfSongHandler(endOfSong, listen));
-						} catch (InvocationTargetException e) {
-							e.printStackTrace();
 						} catch (InterruptedException e) {
 							e.printStackTrace();
-						}
+						} catch (InvocationTargetException e) {
+							e.printStackTrace();
+						} 
 					} else {
 						listen.songHasEnded(endOfSong);
 					}
