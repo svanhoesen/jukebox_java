@@ -83,6 +83,7 @@ public class Student implements Serializable {
 			hasBeenPlayedToday.clear();
 		}
 		return hasBeenPlayedToday.size() < MAX_NUM_O_PLAYS;
+
 	}
 
 	public void makeDateChange() {
@@ -91,5 +92,9 @@ public class Student implements Serializable {
 		else {
 			lastQueueTime = LocalDate.now().plusDays(1);
 		}
+	}
+	
+	public void timeLeft(Song song){
+
 	}
 }

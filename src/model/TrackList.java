@@ -9,8 +9,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class TrackList extends ArrayList<Song> implements Serializable{
-
-
+	
+	public TrackList(){
+		
+	}
 
 	public boolean queueSong(Song song) {
 		if (song.canBePlayedToday()) {

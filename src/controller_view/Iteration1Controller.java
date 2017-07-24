@@ -1,6 +1,8 @@
 package controller_view;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -71,6 +73,22 @@ public class Iteration1Controller extends Application {
     
     GridPane.setConstraints(logOut, 1, 4);
     grid.getChildren().add(logOut);
+    
+    login.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent e) {
+            if ((textFieldAccn.getText() != null && !textFieldAccn.getText().isEmpty())) {
+            }
+        }
+    });
+
+    logOut.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent e) {
+        	textFieldAccn.clear();
+        	textFieldPW.clear();
+        }
+    });
     
 	all.setCenter(grid);
 
