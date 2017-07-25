@@ -17,6 +17,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.Student;
+import model.StudentCollection;
 
 public class Iteration1Controller extends Application {
 
@@ -35,6 +36,8 @@ public class Iteration1Controller extends Application {
 	private String name = "";
 	private String passW = "";
 	private Student stud = new Student(name, passW);
+	private StudentCollection studCollect = new StudentCollection();
+
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -84,19 +87,26 @@ public class Iteration1Controller extends Application {
 		stud.setUserName(textFieldAccn.getText());
 		stud.setPassword(textFieldPW.getText());
 		
-		name = stud.getUserName();
-		passW = stud.getPassword();
 
 		login.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent e) {
-				if ((name == null || passW == null)) {
+			public void handle(ActionEvent e){
+				stud.setUserName(textFieldAccn.getText());
+				stud.setPassword(textFieldPW.getText());
+				name = textFieldAccn.getText();
+				passW = textFieldPW.getText();
+				
+//				System.out.println(name + "  this is a test " + passW);
+
+				if (name == null || passW == null) {
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setTitle("Message");
 					alert.setContentText("Please sign in!");
 					alert.showAndWait();
-				}else{
+				} else if(studCollect.validateStudent(name, passW)){
 					logFirts.setText(songCount + "   " + stud.getTimeAllowed());
+				} else {
+					logFirts.setText("Try Again");
 				}
 			}
 		});
@@ -104,6 +114,8 @@ public class Iteration1Controller extends Application {
 		buttonSong1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
+				stud.setUserName(textFieldAccn.getText());
+				stud.setPassword(textFieldPW.getText());
 				songCount++;
 				logFirts.setText(songCount + "   " + stud.getTimeAllowed());
 				if (songCount == 3) {
@@ -118,6 +130,8 @@ public class Iteration1Controller extends Application {
 		buttonSong2.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
+				stud.setUserName(textFieldAccn.getText());
+				stud.setPassword(textFieldPW.getText());
 				songCount++;
 				logFirts.setText(songCount + "   " + stud.getTimeAllowed());
 				if (songCount == 3) {

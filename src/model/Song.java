@@ -48,7 +48,7 @@ public class Song {
 		this.curDate = new GregorianCalendar(GregorianCalendar.YEAR, GregorianCalendar.MONTH,
 				GregorianCalendar.DAY_OF_MONTH);
 		lastDate = curDate;
-		System.out.println(curDate.get(GregorianCalendar.MONTH));
+//		System.out.println(curDate.get(GregorianCalendar.MONTH));
 		played--;
 	}
 
