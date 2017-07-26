@@ -108,7 +108,7 @@ public class Iteration1Controller extends Application {
 					alert.setContentText("Please sign in!");
 					alert.showAndWait();
 				} else if (studCollect.validateStudent(name, passW)) {
-					logFirts.setText(songCount + "    25:00:00");
+					logFirts.setText(list.size() + "    25:00:00");
 				} else {
 					logFirts.setText("Try Again");
 				}
@@ -127,20 +127,9 @@ public class Iteration1Controller extends Application {
 					song = album.get(0);
 				}
 				if (songCount < 3) {
-					try {
-						list.queueSong(song);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					try {
-						list.playSong(song);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					list.queueSong(song);
 					songCount++;
-					logFirts.setText(songCount + "   " + stud.getTimeAllowed(song));
+					logFirts.setText(list.size() + "   " + stud.getTimeAllowed(song));
 				}
 				if (songCount == 3 || stud.canPlay() == false || song.canBePlayedToday() == false) {
 					logFirts.setText("3     " + stud.getTimeAllowed(song));
@@ -164,20 +153,9 @@ public class Iteration1Controller extends Application {
 					song = album.get(0);
 				}
 				if (songCount < 3) {
-					try {
-						list.queueSong(song);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					try {
-						list.playSong(song);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					list.queueSong(song);
 					songCount++;
-					logFirts.setText(songCount + "   " + stud.getTimeAllowed(song));
+					logFirts.setText(list.size() + "   " + stud.getTimeAllowed(song));
 				}
 				if (songCount == 3 || stud.canPlay() == false || song.canBePlayedToday() == false) {
 					logFirts.setText("3     " + stud.getTimeAllowed(song));

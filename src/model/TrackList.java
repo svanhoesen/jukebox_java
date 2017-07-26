@@ -16,47 +16,39 @@ import javafx.scene.media.MediaPlayer;
 public class TrackList extends ArrayList<Song> implements Serializable {
 	private LinkedList<Song> list;
 	private static final long serialVersionUID = -3548446576180871358L;
+	private MediaPlayer mediaPlayer;
 
 	public TrackList() {
 		list = new LinkedList<Song>();
 	}
+	
+	public int size(){
+		return list.size();
+	}
 
-	public void queueSong(Song song) throws Exception {
-		if (song.canBePlayedToday() || !list.isEmpty()) {
+	public void queueSong(Song song){
+		if(list.isEmpty()) {
 			list.add(song);
 			playSong(song);
-		} else if (list.get(1) == null) {
+		}
+		else {
 			list.add(song);
-			playSong(song);
-		} else if (list.get(2) == null) {
-			list.add(song);
-			playSong(song);
-		} else {
-			return;
 		}
 	}
 
 	private class EndOfSongHandler implements Runnable {
 		@Override
 		public void run() {
-			list.remove(list.peek());
-			if (list.isEmpty()) {
-				return;
-			} else {
-				try {
-					playSong(list.peek());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
+			list.remove();
+			playSong(list.peek());
 		}
 	}
 
-	public void playSong(Song song) throws Exception {
+	public void playSong(Song song) {
 		File file = new File(song.getLocation());
 		URI uri = file.toURI();
 		Media media = new Media(uri.toString());
-		MediaPlayer mediaPlayer = new MediaPlayer(media);
+		mediaPlayer = new MediaPlayer(media);
 		mediaPlayer.setAutoPlay(true);
 		mediaPlayer.play();
 

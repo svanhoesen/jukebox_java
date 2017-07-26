@@ -66,9 +66,8 @@ public class Student implements Serializable {
 		int sec = (timeAllowed - secSong) % SECONDS_PER_MINUTE;
 		int totMin = (timeAllowed - secSong)/ SECONDS_PER_MINUTE;
 		int min = totMin % MINUTES_PER_HOUR;
-		int h = (totMin / MINUTES_PER_HOUR) - 1;
+		int h = (totMin - secSong)/MINUTES_PER_HOUR;
 		
-
 		return ""+ h + ":" + min + ":" + sec;
 	}
 
