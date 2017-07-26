@@ -15,9 +15,7 @@ import demoMediaPlayer.MediaPlayer;
 
 public class JukeBox extends Observable{
 
-	public static String baseDirect = System.getProperty("user.dir") + System.getProperty("file.separator") + "songfiles"
-			+ System.getProperty("file.separator");
-
+	public static String baseDirect = "songfiles/";
 	private String userName;
 	private StudentCollection studentList;
 	private TrackList list = new TrackList();

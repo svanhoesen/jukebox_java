@@ -9,21 +9,20 @@ import model.Song;
 
 public class TrackListTest {
 
-	public static String baseDirect = System.getProperty("user.dir") + System.getProperty("file.separator")
-			+ "songfiles" + System.getProperty("file.separator");
+	public static String baseDirect = "songfiles/";
 
-	@Test
-	public void testLimitOfSongsEachDay() throws Exception {
-		TrackList list = new TrackList();
-		Song song = new Song("Pokemon Capture", 5, "Pikachu", baseDirect + "Capture.mp3");
-		
-		list.queueSong(song);
-		list.queueSong(song);
-		list.queueSong(song);
-		assertEquals(3, list.size());
-		list.queueSong(song);
-		assertEquals(3, list.size());
-	}
+//	@Test
+//	public void testLimitOfSongsEachDay()  {
+//		TrackList list = new TrackList();
+//		Song song = new Song("Pokemon Capture", 5, "Pikachu", baseDirect + "Capture.mp3");
+//		
+//		list.queueSong(song);
+//		list.queueSong(song);
+//		list.queueSong(song);
+//		assertEquals(3, list.size());
+//		list.queueSong(song);
+//		assertEquals(3, list.size());
+//	}
 
 	@Test
 	public void testIsEmpty() {
