@@ -61,13 +61,13 @@ public class Student implements Serializable {
 
 		final int MINUTES_PER_HOUR = 60;
 		final int SECONDS_PER_MINUTE = 60;
+		int secSong = song.getTime();
 
-		int sec = timeAllowed % SECONDS_PER_MINUTE;
-		int totMin = timeAllowed / SECONDS_PER_MINUTE;
+		int sec = (timeAllowed - secSong) % SECONDS_PER_MINUTE;
+		int totMin = (timeAllowed - secSong)/ SECONDS_PER_MINUTE;
 		int min = totMin % MINUTES_PER_HOUR;
-		int h = totMin / MINUTES_PER_HOUR;
+		int h = (totMin / MINUTES_PER_HOUR) - 1;
 		
-//		int secSong = sec - song.getTime();
 
 		return ""+ h + ":" + min + ":" + sec;
 	}

@@ -1,8 +1,5 @@
 package controller_view;
 
-import java.io.File;
-import java.net.URI;
-
 //import demoMediaPlayer.PlayAnMP3.EndOfSongHandler;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -19,8 +16,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import model.Song;
 import model.SongCollection;
@@ -107,19 +102,15 @@ public class Iteration1Controller extends Application {
 				name = textFieldAccn.getText();
 				passW = textFieldPW.getText();
 
-				if (textFieldAccn.getText() == null || textFieldPW.getText() == null
-						|| !studCollect.validateStudent(name, passW)) {
-					try {
-						Alert alert = new Alert(AlertType.INFORMATION);
-						alert.setTitle("Message");
-						alert.setContentText("Please sign in!");
-						alert.showAndWait();
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+				if (textFieldAccn.getText() == null || textFieldPW.getText() == null) {
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setTitle("Message");
+					alert.setContentText("Please sign in!");
+					alert.showAndWait();
+				} else if (studCollect.validateStudent(name, passW)) {
+					logFirts.setText(songCount + "    25:00:00");
 				} else {
-					logFirts.setText(songCount + "   " + stud.getTimeAllowed(song));
+					logFirts.setText("Try Again");
 				}
 			}
 		});

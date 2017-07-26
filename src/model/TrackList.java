@@ -25,16 +25,15 @@ public class TrackList extends ArrayList<Song> implements Serializable {
 		if (song.canBePlayedToday() || !list.isEmpty()) {
 			list.add(song);
 			playSong(song);
-		}
-		if (list.getLast() == null) {
+		} else if (list.get(1) == null) {
 			list.add(song);
 			playSong(song);
-		}
-		if (list.getLast() == null) {
+		} else if (list.get(2) == null) {
 			list.add(song);
 			playSong(song);
+		} else {
+			return;
 		}
-		return;
 	}
 
 	private class EndOfSongHandler implements Runnable {
@@ -49,16 +48,13 @@ public class TrackList extends ArrayList<Song> implements Serializable {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-
 			}
 		}
 	}
 
 	public void playSong(Song song) throws Exception {
-
 		File file = new File(song.getLocation());
 		URI uri = file.toURI();
-		System.out.println(uri);
 		Media media = new Media(uri.toString());
 		MediaPlayer mediaPlayer = new MediaPlayer(media);
 		mediaPlayer.setAutoPlay(true);
