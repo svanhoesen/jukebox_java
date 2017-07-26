@@ -8,8 +8,9 @@ package model;
 import java.time.LocalDate;
 import java.util.GregorianCalendar;
 import java.util.Calendar;
+import java.io.Serializable;
 
-public class Song {
+public class Song implements Serializable{
 	private String title;
 	private int seconds;
 	private String artist;
@@ -48,7 +49,6 @@ public class Song {
 		this.curDate = new GregorianCalendar(GregorianCalendar.YEAR, GregorianCalendar.MONTH,
 				GregorianCalendar.DAY_OF_MONTH);
 		lastDate = curDate;
-//		System.out.println(curDate.get(GregorianCalendar.MONTH));
 		played--;
 	}
 

@@ -16,9 +16,6 @@ import java.util.ArrayList;
 
 public class Student implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5458928616300964957L;
 	// The student can select up to three song everyday.
 	public final static int MAX_NUM_O_PLAYS = 3;
@@ -60,7 +57,7 @@ public class Student implements Serializable {
 		this.password = password;
 	}
 
-	public String getTimeAllowed() {
+	public String getTimeAllowed(Song song) {
 
 		final int MINUTES_PER_HOUR = 60;
 		final int SECONDS_PER_MINUTE = 60;
@@ -69,6 +66,8 @@ public class Student implements Serializable {
 		int totMin = timeAllowed / SECONDS_PER_MINUTE;
 		int min = totMin % MINUTES_PER_HOUR;
 		int h = totMin / MINUTES_PER_HOUR;
+		
+//		int secSong = sec - song.getTime();
 
 		return ""+ h + ":" + min + ":" + sec;
 	}
@@ -98,7 +97,4 @@ public class Student implements Serializable {
 		}
 	}
 	
-	public void timeLeft(Song song){
-
-	}
 }

@@ -23,8 +23,7 @@ public class SongCollection extends ArrayList<Song> implements TableModel, Seria
 	 */
 	private static final long serialVersionUID = 5222553619917902727L;
 	
-	public static String baseDirect = System.getProperty("user.dir") + System.getProperty("file.separator")
-			+ "songfiles" + System.getProperty("file.separator");
+	public static String baseDirect = "songfiles/";
 
 	public SongCollection() {
 		this.add(new Song("Pokemon Capture", 5, "Pikachu", baseDirect + "Capture.mp3"));

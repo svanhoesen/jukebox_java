@@ -75,24 +75,24 @@ public class JukeBox extends Observable{
 		return getCurrentStudent().canPlay();
 	}
 
-	public boolean addSong(Song song) {
-		return list.queueSong(song);
-	}
+//	public boolean addSong(Song song) throws Exception {
+//		return list.queueSong(song);
+//	}
 
-	public void play() {
-		MediaPlayer.playSong(new WaitForSongToEnd(), list.play());
-	}
+//	public void play() {
+//		MediaPlayer.playSong(new WaitForSongToEnd(), list.play());
+//	}
 
-	private class WaitForSongToEnd implements EOSListener {
-
-		public void songHasEnded(EOSEvent eosEvent) {
-			list.remove(0);
-			setChanged();
-			notifyObservers();
-			if (!list.isEmpty()) {
-				MediaPlayer.playSong(new WaitForSongToEnd(), list.play());
-			}
-		}
-	}
+//	private class WaitForSongToEnd implements EOSListener {
+//
+//		public void songHasEnded(EOSEvent eosEvent) {
+//			list.remove(0);
+//			setChanged();
+//			notifyObservers();
+//			if (!list.isEmpty()) {
+//				MediaPlayer.playSong(new WaitForSongToEnd(), list.play());
+//			}
+//		}
+//	}
 
 }

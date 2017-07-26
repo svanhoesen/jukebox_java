@@ -20,7 +20,7 @@ public class PlayAnMP3 extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
 
-    String path = "songfiles/LopingSting.mp3";    
+    String path = "songfiles/Capture.mp3";    
     
     File file = new File(path);
     URI uri = file.toURI();

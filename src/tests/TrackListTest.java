@@ -8,14 +8,15 @@ import model.TrackList;
 import model.Song;
 
 public class TrackListTest {
-	
-	public static String baseDirect = System.getProperty("user.dir") + System.getProperty("file.separator") + "songfiles"
-			+ System.getProperty("file.separator");
+
+	public static String baseDirect = System.getProperty("user.dir") + System.getProperty("file.separator")
+			+ "songfiles" + System.getProperty("file.separator");
 
 	@Test
-	public void testLimitOfSongsEachDay() {
+	public void testLimitOfSongsEachDay() throws Exception {
 		TrackList list = new TrackList();
-		Song song = new Song("Pokemon Capture", 5, "Pikachu", baseDirect +"Capture.mp3");
+		Song song = new Song("Pokemon Capture", 5, "Pikachu", baseDirect + "Capture.mp3");
+		
 		list.queueSong(song);
 		list.queueSong(song);
 		list.queueSong(song);
@@ -23,21 +24,19 @@ public class TrackListTest {
 		list.queueSong(song);
 		assertEquals(3, list.size());
 	}
-	
+
 	@Test
-	public void testIsEmpty(){
+	public void testIsEmpty() {
 		TrackList list = new TrackList();
 		assertTrue(list.isEmpty());
 	}
-	
-	@Test
-	public void testPlay(){
-		TrackList list = new TrackList();
-		Song song = new Song("Untameable Fire", 282, "Pierre Langer", baseDirect + "UntameableFire.mp3");
-		list.queueSong(song);
-		assertEquals("Untameable Fire", list.play());
-	}
+//
+//	@Test
+//	public void testPlay() {
+//		TrackList list = new TrackList();
+//		Song song = new Song("Untameable Fire", 282, "Pierre Langer", baseDirect + "UntameableFire.mp3");
+//		list.queueSong(song);
+//		assertEquals("Untameable Fire", list.play());
+//	}
 
 }
-
-

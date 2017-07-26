@@ -1,5 +1,9 @@
 package controller_view;
 
+import java.io.File;
+import java.net.URI;
+
+//import demoMediaPlayer.PlayAnMP3.EndOfSongHandler;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,9 +19,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import model.Song;
+import model.SongCollection;
 import model.Student;
 import model.StudentCollection;
+import model.TrackList;
 
 public class Iteration1Controller extends Application {
 
@@ -25,23 +34,26 @@ public class Iteration1Controller extends Application {
 		launch(args);
 	}
 
-	private Button buttonSong1 = new Button("Select song 1");
-	private Button buttonSong2 = new Button("Select song 2");
-	private Label accontName = new Label("Accont Name");
-	private Label pasword = new Label("Pasword");
-	private Button login = new Button("Login");
-	private Label logFirts = new Label("Login first");
-	private Button logOut = new Button("Log out");
+	private Button buttonSong1;
+	private Button buttonSong2;
+	private Label accontName;
+	private Label pasword;
+	private Button login;
+	private Label logFirts;
+	private Button logOut;
 	private int songCount = 0;
 	private String name = "";
 	private String passW = "";
 	private Student stud = new Student(name, passW);
-	private StudentCollection studCollect = new StudentCollection();
-
+	private StudentCollection studCollect;
+	private SongCollection album;
+	private Song song;
+	private TrackList list;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
+		setup();
 		BorderPane all = new BorderPane();
 		GridPane grid = new GridPane();
 		grid.setPadding(new Insets(10, 10, 10, 10));
@@ -83,30 +95,31 @@ public class Iteration1Controller extends Application {
 
 		GridPane.setConstraints(logOut, 1, 4);
 		grid.getChildren().add(logOut);
-		
+
 		stud.setUserName(textFieldAccn.getText());
 		stud.setPassword(textFieldPW.getText());
-		
 
 		login.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent e){
+			public void handle(ActionEvent e) {
 				stud.setUserName(textFieldAccn.getText());
 				stud.setPassword(textFieldPW.getText());
 				name = textFieldAccn.getText();
 				passW = textFieldPW.getText();
-				
-//				System.out.println(name + "  this is a test " + passW);
 
-				if (name == null || passW == null) {
-					Alert alert = new Alert(AlertType.INFORMATION);
-					alert.setTitle("Message");
-					alert.setContentText("Please sign in!");
-					alert.showAndWait();
-				} else if(studCollect.validateStudent(name, passW)){
-					logFirts.setText(songCount + "   " + stud.getTimeAllowed());
+				if (textFieldAccn.getText() == null || textFieldPW.getText() == null
+						|| !studCollect.validateStudent(name, passW)) {
+					try {
+						Alert alert = new Alert(AlertType.INFORMATION);
+						alert.setTitle("Message");
+						alert.setContentText("Please sign in!");
+						alert.showAndWait();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				} else {
-					logFirts.setText("Try Again");
+					logFirts.setText(songCount + "   " + stud.getTimeAllowed(song));
 				}
 			}
 		});
@@ -116,9 +129,30 @@ public class Iteration1Controller extends Application {
 			public void handle(ActionEvent e) {
 				stud.setUserName(textFieldAccn.getText());
 				stud.setPassword(textFieldPW.getText());
-				songCount++;
-				logFirts.setText(songCount + "   " + stud.getTimeAllowed());
-				if (songCount == 3) {
+
+				name = textFieldAccn.getText();
+				passW = textFieldPW.getText();
+				if (studCollect.validateStudent(name, passW)) {
+					song = album.get(0);
+				}
+				if (songCount < 3) {
+					try {
+						list.queueSong(song);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					try {
+						list.playSong(song);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					songCount++;
+					logFirts.setText(songCount + "   " + stud.getTimeAllowed(song));
+				}
+				if (songCount == 3 || stud.canPlay() == false || song.canBePlayedToday() == false) {
+					logFirts.setText("3     " + stud.getTimeAllowed(song));
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setTitle("Message");
 					alert.setContentText("User has reached the limit!");
@@ -132,9 +166,30 @@ public class Iteration1Controller extends Application {
 			public void handle(ActionEvent e) {
 				stud.setUserName(textFieldAccn.getText());
 				stud.setPassword(textFieldPW.getText());
-				songCount++;
-				logFirts.setText(songCount + "   " + stud.getTimeAllowed());
-				if (songCount == 3) {
+
+				name = textFieldAccn.getText();
+				passW = textFieldPW.getText();
+				if (studCollect.validateStudent(name, passW)) {
+					song = album.get(0);
+				}
+				if (songCount < 3) {
+					try {
+						list.queueSong(song);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					try {
+						list.playSong(song);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					songCount++;
+					logFirts.setText(songCount + "   " + stud.getTimeAllowed(song));
+				}
+				if (songCount == 3 || stud.canPlay() == false || song.canBePlayedToday() == false) {
+					logFirts.setText("3     " + stud.getTimeAllowed(song));
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setTitle("Message");
 					alert.setContentText("User has reached the limit!");
@@ -154,8 +209,23 @@ public class Iteration1Controller extends Application {
 		});
 
 		all.setCenter(grid);
-
 		// Don't forget to show the running application:
 		primaryStage.show();
 	}
+
+	private void setup() {
+		// TODO Auto-generated method stub
+		buttonSong1 = new Button("Select song 1");
+		buttonSong2 = new Button("Select song 2");
+		accontName = new Label("Accont Name");
+		pasword = new Label("Pasword");
+		login = new Button("Login");
+		logFirts = new Label("Login first");
+		logOut = new Button("Log out");
+		stud = new Student(name, passW);
+		studCollect = new StudentCollection();
+		album = new SongCollection();
+		list = new TrackList();
+	}
+
 }
