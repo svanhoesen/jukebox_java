@@ -60,7 +60,7 @@ public class Iteration2Controller extends Application {
 		grid.setVgap(5);
 		grid.setHgap(5);
 
-		Scene scene = new Scene(all, 300, 450);
+		Scene scene = new Scene(all, 320, 450);
 		primaryStage.setScene(scene);
 
 		HBox hbox = new HBox();

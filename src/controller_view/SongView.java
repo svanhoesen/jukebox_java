@@ -32,7 +32,7 @@ public class SongView extends TableView {
 		title.setPrefWidth(100);
 		artist.setPrefWidth(100);
 		time.setPrefWidth(60);
-		this.setWidth(320);
+		this.setWidth(350);
 
 		// Set the model for this TableView
 		songCollection = new SongCollection();
