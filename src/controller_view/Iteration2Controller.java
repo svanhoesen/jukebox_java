@@ -1,21 +1,22 @@
 package controller_view;
 
-//import demoMediaPlayer.PlayAnMP3.EndOfSongHandler;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import model.Song;
@@ -31,8 +32,7 @@ public class Iteration2Controller extends Application {
 	}
 
 	private SongView songViewer;
-	private Button buttonSong1;
-	private Button buttonSong2;
+	private Button buttonGo;
 	private Label accontName;
 	private Label pasword;
 	private TextField textFieldAccn;
@@ -49,6 +49,8 @@ public class Iteration2Controller extends Application {
 	private SongCollection album;
 	private Song song;
 	private TrackList list;
+	private ObservableList<String> songsForList;
+	private ListView<String> listViewSongs;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -60,16 +62,8 @@ public class Iteration2Controller extends Application {
 		grid.setVgap(5);
 		grid.setHgap(5);
 
-		Scene scene = new Scene(all, 320, 450);
+		Scene scene = new Scene(all, 450, 450);
 		primaryStage.setScene(scene);
-
-		HBox hbox = new HBox();
-		hbox.setPadding(new Insets(15, 12, 15, 12));
-		hbox.setSpacing(10);
-
-		hbox.getChildren().addAll(buttonSong1, buttonSong2);
-		hbox.setAlignment(Pos.CENTER);
-		all.setTop(hbox);
 
 		GridPane.setConstraints(accontName, 0, 0);
 		grid.getChildren().add(accontName);
@@ -98,96 +92,86 @@ public class Iteration2Controller extends Application {
 		labelTitle.setFont(new Font("Arial", 16));
 		grid.getChildren().add(labelTitle);
 
+		GridPane.setConstraints(songViewer, 0, 6);
+		grid.getChildren().add(songViewer);
+
+		GridPane.setConstraints(buttonGo, 1, 6);
+		grid.getChildren().add(buttonGo);
+
+		// action methods
+		setUpHandler();
+		logOut();
+
 		stud.setUserName(textFieldAccn.getText());
 		stud.setPassword(textFieldPW.getText());
 
-		// action methods
-		login();
-		buttonClickSong1();
-		buttonClickSong2();
-		logOut();
-
 		all.setCenter(grid);
+		//Show current playlist
+		all.setBottom(listViewSongs);
 
-		all.setBottom(songViewer);
 		// Don't forget to show the running application:
 		primaryStage.show();
 	}
 
-	private void login() {
-		login.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				stud.setUserName(textFieldAccn.getText());
-				stud.setPassword(textFieldPW.getText());
+	private void setUpHandler() {
+		login.setOnAction(event -> {
+			stud.setUserName(textFieldAccn.getText());
+			stud.setPassword(textFieldPW.getText());
+			name = textFieldAccn.getText();
+			passW = textFieldPW.getText();
+
+			if (textFieldAccn.getText() == null || textFieldPW.getText() == null) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Message");
+				alert.setContentText("Please sign in!");
+				alert.showAndWait();
+			} else if (studCollect.validateStudent(name, passW)) {
+				logFirts.setText(list.size() + "    25:00:00");
+
+				// Determine which row is selected
+				Song selectedSong = (Song) songViewer.getSelectionModel().getSelectedItem();
+				// Pass the selected song
+				song = selectedSong;
+				songViewer.refresh();
+				//Pass the list of all songs
+				SongCollection songCollection = songViewer.getList();
+				for (int i = 0; i < songCollection.size(); i++) {
+					System.out.println(songCollection.get(i).getSongTitle());//just for test
+				}
+				//Get info from selected list
+				songsForList = FXCollections.observableArrayList(songCollection.get(0).getSongTitle());
+				ListView<String> listView = new ListView<String>(songsForList);
+				listVeiwSong(listView);
+				//Handle song media play
 				name = textFieldAccn.getText();
 				passW = textFieldPW.getText();
 
-				if (textFieldAccn.getText() == null || textFieldPW.getText() == null) {
+				if (studCollect.validateStudent(name, passW) && (songCount < 3)) {
+					song = selectedSong;
+					list.queueSong(song);
+					songCount++;
+					logFirts.setText(list.size() + "   " + stud.getTimeAllowed(song));
+				}
+				if (songCount == 3 || stud.canPlay() == false || song.canBePlayedToday() == false) {
+					logFirts.setText("3     " + stud.getTimeAllowed(song));
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setTitle("Message");
-					alert.setContentText("Please sign in!");
+					alert.setContentText("User has reached the limit!");
 					alert.showAndWait();
-				} else if (studCollect.validateStudent(name, passW)) {
-					logFirts.setText(list.size() + "    25:00:00");
+				}
+			} else {
+				logFirts.setText("Try Again");
+			}
+		});
+	}
+
+	private void listVeiwSong(ListView<String> listViewSongs) {
+		listViewSongs.setCellFactory(param -> new ListCell<String>() {
+			protected void updateItem(Song song, boolean empty) {
+				if (empty || song == null || song.getSongTitle() == null) {
+					setText(null);
 				} else {
-					logFirts.setText("Try Again");
-				}
-			}
-		});
-	}
-
-	private void buttonClickSong1() {
-		buttonSong1.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				stud.setUserName(textFieldAccn.getText());
-				stud.setPassword(textFieldPW.getText());
-
-				name = textFieldAccn.getText();
-				passW = textFieldPW.getText();
-				if (studCollect.validateStudent(name, passW)) {
-					song = album.get(0);
-				}
-				if (songCount < 3) {
-					list.queueSong(song);
-					songCount++;
-					logFirts.setText(list.size() + "   " + stud.getTimeAllowed(song));
-				}
-				if (songCount == 3 || stud.canPlay() == false || song.canBePlayedToday() == false) {
-					logFirts.setText("3     " + stud.getTimeAllowed(song));
-					Alert alert = new Alert(AlertType.INFORMATION);
-					alert.setTitle("Message");
-					alert.setContentText("User has reached the limit!");
-					alert.showAndWait();
-				}
-			}
-		});
-	}
-
-	private void buttonClickSong2() {
-		buttonSong2.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				stud.setUserName(textFieldAccn.getText());
-				stud.setPassword(textFieldPW.getText());
-
-				name = textFieldAccn.getText();
-				passW = textFieldPW.getText();
-				if (studCollect.validateStudent(name, passW)) {
-					song = album.get(0);
-				}
-				if (songCount < 3) {
-					list.queueSong(song);
-					songCount++;
-					logFirts.setText(list.size() + "   " + stud.getTimeAllowed(song));
-				}
-				if (songCount == 3 || stud.canPlay() == false || song.canBePlayedToday() == false) {
-					logFirts.setText("3     " + stud.getTimeAllowed(song));
-					Alert alert = new Alert(AlertType.INFORMATION);
-					alert.setTitle("Message");
-					alert.setContentText("User has reached the limit!");
-					alert.showAndWait();
+					setText(song.getSongTitle());
 				}
 			}
 		});
@@ -209,8 +193,7 @@ public class Iteration2Controller extends Application {
 		// TODO Auto-generated method stub
 		labelTitle = new Label("Song List");
 		songViewer = new SongView();
-		buttonSong1 = new Button("Select song 1");
-		buttonSong2 = new Button("Select song 2");
+		buttonGo = new Button("->");
 		textFieldPW = new PasswordField();
 		textFieldAccn = new TextField();
 		accontName = new Label("Accont Name");

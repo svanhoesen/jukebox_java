@@ -33,7 +33,7 @@ public class PlayAnMP3 extends Application {
     mediaPlayer.setOnEndOfMedia(new EndOfSongHandler());
   }
  
-  private class EndOfSongHandler implements Runnable {
+  public class EndOfSongHandler implements Runnable {
     @Override
     public void run() {
       songsPlayed++;

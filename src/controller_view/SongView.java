@@ -17,7 +17,7 @@ public class SongView extends TableView {
 	public SongView() {
 		// Add columns and rows
 		TableColumn<Song, Integer> plays = new TableColumn<>("Plays");
-		TableColumn<Song, String> title = new TableColumn<>("title");
+		TableColumn<Song, String> title = new TableColumn<>("Title");
 		TableColumn<Song, String> artist = new TableColumn<>("Artist");
 		TableColumn<Song, String> time = new TableColumn<>("Time");
 

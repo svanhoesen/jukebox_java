@@ -44,6 +44,10 @@ public class Song implements Serializable{
 	public String getLocation() {
 		return fileName;
 	}
+	
+	public int getPlayed(){
+		return played;
+	}
 
 	public void PlayMe() {
 		this.curDate = new GregorianCalendar(GregorianCalendar.YEAR, GregorianCalendar.MONTH,
