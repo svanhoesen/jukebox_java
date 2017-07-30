@@ -40,6 +40,7 @@ public class Iteration2Controller extends Application {
 	private Label labelTitle;
 	private Button login;
 	private Label logFirts;
+	private Label currPlay;
 	private Button logOut;
 	private int songCount = 0;
 	private String name = "";
@@ -49,7 +50,7 @@ public class Iteration2Controller extends Application {
 	private SongCollection album;
 	private Song song;
 	private TrackList list;
-	private ObservableList<String> songsForList;
+	private ObservableList<Song> songsForList;
 	private ListView<String> listViewSongs;
 
 	@Override
@@ -62,7 +63,7 @@ public class Iteration2Controller extends Application {
 		grid.setVgap(5);
 		grid.setHgap(5);
 
-		Scene scene = new Scene(all, 450, 450);
+		Scene scene = new Scene(all, 700, 600);
 		primaryStage.setScene(scene);
 
 		GridPane.setConstraints(accontName, 0, 0);
@@ -98,7 +99,11 @@ public class Iteration2Controller extends Application {
 		GridPane.setConstraints(buttonGo, 1, 6);
 		grid.getChildren().add(buttonGo);
 
+		GridPane.setConstraints(currPlay, 2, 6);
+		grid.getChildren().add(currPlay);
+		
 		// action methods
+		login();
 		setUpHandler();
 		logOut();
 
@@ -106,75 +111,79 @@ public class Iteration2Controller extends Application {
 		stud.setPassword(textFieldPW.getText());
 
 		all.setCenter(grid);
-		//Show current playlist
-		all.setBottom(listViewSongs);
+		// Show current playlist
+//		all.setBottom(listViewSongs);
 
 		// Don't forget to show the running application:
 		primaryStage.show();
 	}
 
-	private void setUpHandler() {
-		login.setOnAction(event -> {
-			stud.setUserName(textFieldAccn.getText());
-			stud.setPassword(textFieldPW.getText());
-			name = textFieldAccn.getText();
-			passW = textFieldPW.getText();
-
-			if (textFieldAccn.getText() == null || textFieldPW.getText() == null) {
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("Message");
-				alert.setContentText("Please sign in!");
-				alert.showAndWait();
-			} else if (studCollect.validateStudent(name, passW)) {
-				logFirts.setText(list.size() + "    25:00:00");
-
-				// Determine which row is selected
-				Song selectedSong = (Song) songViewer.getSelectionModel().getSelectedItem();
-				// Pass the selected song
-				song = selectedSong;
-				songViewer.refresh();
-				//Pass the list of all songs
-				SongCollection songCollection = songViewer.getList();
-				for (int i = 0; i < songCollection.size(); i++) {
-					System.out.println(songCollection.get(i).getSongTitle());//just for test
-				}
-				//Get info from selected list
-				songsForList = FXCollections.observableArrayList(songCollection.get(0).getSongTitle());
-				ListView<String> listView = new ListView<String>(songsForList);
-				listVeiwSong(listView);
-				song = selectedSong;
-				list.queueSong(song);
-				//Handle song media play
+	private void login() {
+		login.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				stud.setUserName(textFieldAccn.getText());
+				stud.setPassword(textFieldPW.getText());
 				name = textFieldAccn.getText();
 				passW = textFieldPW.getText();
 
-				if (studCollect.validateStudent(name, passW) && (songCount < 3)) {
-					song = selectedSong;
-//					list.queueSong(song);
-					songCount++;
-					logFirts.setText(list.size() + "   " + stud.getTimeAllowed(song));
-				}
-				if (songCount == 3 || stud.canPlay() == false || song.canBePlayedToday() == false) {
-					logFirts.setText("3     " + stud.getTimeAllowed(song));
+				if (textFieldAccn.getText() == null || textFieldPW.getText() == null) {
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setTitle("Message");
-					alert.setContentText("User has reached the limit!");
+					alert.setContentText("Please sign in!");
 					alert.showAndWait();
+				} else if (studCollect.validateStudent(name, passW)) {
+					logFirts.setText(list.size() + "    25:00:00");
+				} else {
+					logFirts.setText("Try Again");
 				}
-			} else {
-				logFirts.setText("Try Again");
 			}
 		});
 	}
 
-	private void listVeiwSong(ListView<String> listViewSongs) {
-		listViewSongs.setCellFactory(param -> new ListCell<String>() {
-			protected void updateItem(Song song, boolean empty) {
-				if (empty || song == null || song.getSongTitle() == null) {
-					setText(null);
-				} else {
-					setText(song.getSongTitle());
-				}
+	private void setUpHandler() {
+		buttonGo.setOnAction(event -> {
+			if (studCollect.validateStudent(name, passW) && (songCount < 3)) {
+				logFirts.setText(list.size() + "    25:00:00");
+				// Determine which row is selected
+				Song selectedSong = (Song) songViewer.getSelectionModel().getSelectedItem();
+				// Pass the selected song
+				Song songToPlay = selectedSong;
+				System.out.println("this is a test for the song class " + songToPlay.getTitle());
+				list.queueSong(songToPlay);
+				
+				currPlay.setText(songToPlay.getTitle());
+
+				// Get info from selected list
+//				SongCollection songCollection = songViewer.getList();
+
+				// Get info from selected list
+//				songsForList = FXCollections.observableArrayList(songCollection.get(0).getTitle());
+//				ListView<Song> listView = new ListView<Song>(songsForList);
+//				listView.setCellFactory(param -> new ListCell<Song>() {
+//		            @Override
+//		            protected void updateItem(Song item, boolean empty) {
+//		                super.updateItem(item, empty);
+//
+//		                if (empty || item == null || item.getTitle() == null) {
+//		                    setText(null);
+//		                } else {
+//		                    setText(item.getTitle());
+//		                }
+//		            }
+//		        });
+//				songViewer.refresh();
+
+				songCount++;
+				logFirts.setText(list.size() + "   " + stud.getTimeAllowed(songToPlay));
+			} else if (songCount == 3 || stud.canPlay() == false || song.canBePlayedToday() == false) {
+				logFirts.setText("3     " + stud.getTimeAllowed(song));
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Message");
+				alert.setContentText("User has reached the limit!");
+				alert.showAndWait();
+			} else {
+				logFirts.setText("Try Again");
 			}
 		});
 	}
@@ -186,6 +195,7 @@ public class Iteration2Controller extends Application {
 				textFieldAccn.clear();
 				textFieldPW.clear();
 				logFirts.setText("Login first");
+				currPlay.setText("Waiting to que song...");
 				songCount = 0;
 			}
 		});
@@ -195,13 +205,14 @@ public class Iteration2Controller extends Application {
 		// TODO Auto-generated method stub
 		labelTitle = new Label("Song List");
 		songViewer = new SongView();
-		buttonGo = new Button("->");
+		buttonGo = new Button("Add to Playlist");
 		textFieldPW = new PasswordField();
 		textFieldAccn = new TextField();
 		accontName = new Label("Accont Name");
 		pasword = new Label("Pasword");
 		login = new Button("Login");
 		logFirts = new Label("Login first");
+		currPlay = new Label("Waiting to que song...");
 		logOut = new Button("Log out");
 		stud = new Student(name, passW);
 		studCollect = new StudentCollection();

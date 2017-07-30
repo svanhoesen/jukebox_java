@@ -17,7 +17,7 @@ public class Song implements Serializable{
 	private String fileName;
 	private GregorianCalendar lastDate;
 	private GregorianCalendar curDate;
-	private int played;
+	private int plays;
 	private int maxPlay = 3;
 
 	public Song(String title, int seconds, String artist, String fileName) {
@@ -25,11 +25,11 @@ public class Song implements Serializable{
 		this.seconds = seconds;
 		this.artist = artist;
 		this.fileName = fileName;
+		this.plays = 0;
 		this.lastDate = new GregorianCalendar();
-		played = maxPlay;
 	}
 
-	public String getSongTitle() {
+	public String getTitle() {
 		return title;
 	}
 
@@ -45,28 +45,28 @@ public class Song implements Serializable{
 		return fileName;
 	}
 	
-	public int getPlayed(){
-		return played;
+	public int getPlays(){
+		return plays;
 	}
 
 	public void PlayMe() {
 		this.curDate = new GregorianCalendar(GregorianCalendar.YEAR, GregorianCalendar.MONTH,
 				GregorianCalendar.DAY_OF_MONTH);
 		lastDate = curDate;
-		played--;
+		plays++;
 	}
 
 	public int timePlayedToday() {
-		return maxPlay - played;
+		return maxPlay - plays;
 	}
 
 	public void pretendItsTomorrow() {
 		lastDate.add(Calendar.DATE, 1);
-		played = maxPlay;
+		plays = maxPlay;
 	}
 
 	public boolean canBePlayedToday() {
-		if (played == 0) {
+		if (plays == 3) {
 			return false;
 		}
 		return true;

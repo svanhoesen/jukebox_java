@@ -61,6 +61,7 @@ public class Student implements Serializable {
 
 		final int MINUTES_PER_HOUR = 60;
 		final int SECONDS_PER_MINUTE = 60;
+		System.out.println(song.getTitle() + "time of curr song");
 		int secSong = song.getTime();
 
 		int sec = (timeAllowed - secSong) % SECONDS_PER_MINUTE;
