@@ -142,13 +142,15 @@ public class Iteration2Controller extends Application {
 				songsForList = FXCollections.observableArrayList(songCollection.get(0).getSongTitle());
 				ListView<String> listView = new ListView<String>(songsForList);
 				listVeiwSong(listView);
+				song = selectedSong;
+				list.queueSong(song);
 				//Handle song media play
 				name = textFieldAccn.getText();
 				passW = textFieldPW.getText();
 
 				if (studCollect.validateStudent(name, passW) && (songCount < 3)) {
 					song = selectedSong;
-					list.queueSong(song);
+//					list.queueSong(song);
 					songCount++;
 					logFirts.setText(list.size() + "   " + stud.getTimeAllowed(song));
 				}

@@ -73,6 +73,7 @@ public class JukeBox extends Observable{
 		return getCurrentStudent().canPlay();
 	}
 
+
 //	public boolean addSong(Song song) throws Exception {
 //		return list.queueSong(song);
 //	}
