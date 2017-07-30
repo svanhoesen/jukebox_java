@@ -38,6 +38,8 @@ public class Iteration2Controller extends Application {
 	private TextField textFieldAccn;
 	private PasswordField textFieldPW;
 	private Label labelTitle;
+	private Label labelCurrPlay;
+	private Label howToPlay;
 	private Button login;
 	private Label logFirts;
 	private Label currPlay;
@@ -92,6 +94,13 @@ public class Iteration2Controller extends Application {
 		GridPane.setConstraints(labelTitle, 0, 5);
 		labelTitle.setFont(new Font("Arial", 16));
 		grid.getChildren().add(labelTitle);
+		
+		GridPane.setConstraints(howToPlay, 1, 5);
+		grid.getChildren().add(howToPlay);
+		
+		GridPane.setConstraints(labelCurrPlay, 2, 5);
+		labelCurrPlay.setFont(new Font("Arial", 16));
+		grid.getChildren().add(labelCurrPlay);
 
 		GridPane.setConstraints(songViewer, 0, 6);
 		grid.getChildren().add(songViewer);
@@ -151,6 +160,9 @@ public class Iteration2Controller extends Application {
 				Song songToPlay = selectedSong;
 				System.out.println("this is a test for the song class " + songToPlay.getTitle());
 				list.queueSong(songToPlay);
+				songToPlay.PlayMe();
+				songCount++;
+				logFirts.setText(list.size() + "   " + stud.getTimeAllowed(songToPlay));
 				
 				currPlay.setText(songToPlay.getTitle());
 
@@ -174,8 +186,6 @@ public class Iteration2Controller extends Application {
 //		        });
 //				songViewer.refresh();
 
-				songCount++;
-				logFirts.setText(list.size() + "   " + stud.getTimeAllowed(songToPlay));
 			} else if (songCount == 3 || stud.canPlay() == false || song.canBePlayedToday() == false) {
 				logFirts.setText("3     " + stud.getTimeAllowed(song));
 				Alert alert = new Alert(AlertType.INFORMATION);
@@ -204,6 +214,8 @@ public class Iteration2Controller extends Application {
 	private void setup() {
 		// TODO Auto-generated method stub
 		labelTitle = new Label("Song List");
+		labelCurrPlay = new Label("Current Playlist");
+		howToPlay = new Label("Select then add to list");
 		songViewer = new SongView();
 		buttonGo = new Button("Add to Playlist");
 		textFieldPW = new PasswordField();
@@ -212,7 +224,7 @@ public class Iteration2Controller extends Application {
 		pasword = new Label("Pasword");
 		login = new Button("Login");
 		logFirts = new Label("Login first");
-		currPlay = new Label("Waiting to que song...");
+		currPlay = new Label("Waiting to queue song...");
 		logOut = new Button("Log out");
 		stud = new Student(name, passW);
 		studCollect = new StudentCollection();
