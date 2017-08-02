@@ -10,6 +10,9 @@ import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.LinkedList;
+
+import controller_view.Iteration2Controller;
+import controller_view.JukeBoxGUI;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -21,17 +24,16 @@ public class TrackList extends ArrayList<Song> implements Serializable {
 	public TrackList() {
 		list = new LinkedList<Song>();
 	}
-	
-	public int size(){
+
+	public int size() {
 		return list.size();
 	}
 
-	public void queueSong(Song song){
-		if(list.isEmpty()) {
+	public void queueSong(Song song) {
+		if (list.isEmpty()) {
 			list.add(song);
 			playSong(song);
-		}
-		else {
+		} else {
 			list.add(song);
 		}
 	}
@@ -39,8 +41,11 @@ public class TrackList extends ArrayList<Song> implements Serializable {
 	private class EndOfSongHandler implements Runnable {
 		@Override
 		public void run() {
+			Iteration2Controller.getSongsForList().remove(list.peek());
+			Iteration2Controller.getListViewSongs().refresh();
 			list.remove();
-			playSong(list.peek());
+			if (!list.isEmpty())
+				playSong(list.peek());
 		}
 	}
 

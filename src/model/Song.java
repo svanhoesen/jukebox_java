@@ -29,6 +29,10 @@ public class Song implements Serializable{
 		this.lastDate = new GregorianCalendar();
 	}
 
+	public void setPlays(int plays) {
+		this.plays = plays;
+	}
+	
 	public String getTitle() {
 		return title;
 	}
@@ -70,6 +74,11 @@ public class Song implements Serializable{
 			return false;
 		}
 		return true;
+	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return title;
 	}
 
 }

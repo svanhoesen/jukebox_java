@@ -1,5 +1,8 @@
 package controller_view;
 
+import com.sun.org.glassfish.external.statistics.Statistic;
+import com.sun.xml.internal.bind.v2.model.core.ID;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -47,13 +50,16 @@ public class Iteration2Controller extends Application {
 	private int songCount = 0;
 	private String name = "";
 	private String passW = "";
-	private Student stud = new Student(name, passW);
+	private Student curStud;
 	private StudentCollection studCollect;
 	private SongCollection album;
-	private Song song;
+	private Song songToPlay;
 	private TrackList list;
-	private ObservableList<Song> songsForList;
-	private ListView<String> listViewSongs;
+	private static ObservableList<Song> songsForList = FXCollections.observableArrayList();
+	private static ListView<Song> listViewSongs;
+	private String remainingTime = "";
+	private int usedTime;
+	private int userPlays = 0;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -94,10 +100,10 @@ public class Iteration2Controller extends Application {
 		GridPane.setConstraints(labelTitle, 0, 5);
 		labelTitle.setFont(new Font("Arial", 16));
 		grid.getChildren().add(labelTitle);
-		
+
 		GridPane.setConstraints(howToPlay, 1, 5);
 		grid.getChildren().add(howToPlay);
-		
+
 		GridPane.setConstraints(labelCurrPlay, 2, 5);
 		labelCurrPlay.setFont(new Font("Arial", 16));
 		grid.getChildren().add(labelCurrPlay);
@@ -108,20 +114,14 @@ public class Iteration2Controller extends Application {
 		GridPane.setConstraints(buttonGo, 1, 6);
 		grid.getChildren().add(buttonGo);
 
-		GridPane.setConstraints(currPlay, 2, 6);
-		grid.getChildren().add(currPlay);
-		
+		GridPane.setConstraints(listViewSongs, 2, 6);
+		grid.getChildren().add(listViewSongs);
+
 		// action methods
 		login();
 		setUpHandler();
 		logOut();
-
-		stud.setUserName(textFieldAccn.getText());
-		stud.setPassword(textFieldPW.getText());
-
 		all.setCenter(grid);
-		// Show current playlist
-//		all.setBottom(listViewSongs);
 
 		// Don't forget to show the running application:
 		primaryStage.show();
@@ -131,20 +131,18 @@ public class Iteration2Controller extends Application {
 		login.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				stud.setUserName(textFieldAccn.getText());
-				stud.setPassword(textFieldPW.getText());
+
 				name = textFieldAccn.getText();
 				passW = textFieldPW.getText();
 
-				if (textFieldAccn.getText() == null || textFieldPW.getText() == null) {
+				if (studCollect.validateStudent(name, passW)) {
+					curStud = studCollect.get(name);
+					logFirts.setText(curStud.getPlayedToday() + "       " + curStud.getTimeAllowed());
+				} else {
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setTitle("Message");
 					alert.setContentText("Please sign in!");
 					alert.showAndWait();
-				} else if (studCollect.validateStudent(name, passW)) {
-					logFirts.setText(list.size() + "    25:00:00");
-				} else {
-					logFirts.setText("Try Again");
 				}
 			}
 		});
@@ -152,48 +150,41 @@ public class Iteration2Controller extends Application {
 
 	private void setUpHandler() {
 		buttonGo.setOnAction(event -> {
-			if (studCollect.validateStudent(name, passW) && (songCount < 3)) {
-				logFirts.setText(list.size() + "    25:00:00");
-				// Determine which row is selected
-				Song selectedSong = (Song) songViewer.getSelectionModel().getSelectedItem();
-				// Pass the selected song
-				Song songToPlay = selectedSong;
-				System.out.println("this is a test for the song class " + songToPlay.getTitle());
-				list.queueSong(songToPlay);
-				songToPlay.PlayMe();
-				songCount++;
-				logFirts.setText(list.size() + "   " + stud.getTimeAllowed(songToPlay));
-				
-				currPlay.setText(songToPlay.getTitle());
-
-				// Get info from selected list
-//				SongCollection songCollection = songViewer.getList();
-
-				// Get info from selected list
-//				songsForList = FXCollections.observableArrayList(songCollection.get(0).getTitle());
-//				ListView<Song> listView = new ListView<Song>(songsForList);
-//				listView.setCellFactory(param -> new ListCell<Song>() {
-//		            @Override
-//		            protected void updateItem(Song item, boolean empty) {
-//		                super.updateItem(item, empty);
-//
-//		                if (empty || item == null || item.getTitle() == null) {
-//		                    setText(null);
-//		                } else {
-//		                    setText(item.getTitle());
-//		                }
-//		            }
-//		        });
-//				songViewer.refresh();
-
-			} else if (songCount == 3 || stud.canPlay() == false || song.canBePlayedToday() == false) {
-				logFirts.setText("3     " + stud.getTimeAllowed(song));
+			if (curStud == null) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Message");
+				alert.setContentText("Please sign in!");
+				alert.showAndWait();
+				logFirts.setText("PLEASE LOG IN!");
+			} else if (curStud == null || (curStud.getPlayedToday() >= 3)) {
+				logFirts.setText(curStud.getPlayedToday() + "     " + curStud.getTimeAllowed());
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Message");
 				alert.setContentText("User has reached the limit!");
 				alert.showAndWait();
 			} else {
-				logFirts.setText("Try Again");
+				logFirts.setText(curStud.getPlayedToday() + "         " + curStud.getTimeAllowed());
+				// Determine which row is selected
+				Song selectedSong = (Song) songViewer.getSelectionModel().getSelectedItem();
+				// Pass the selected song
+				songToPlay = selectedSong;
+				// Get song length
+				songToPlay.setPlays(songToPlay.getPlays() + 1);
+				songViewer.refresh();
+				if (songToPlay.getPlays() > 3) {
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setTitle("Message");
+					alert.setContentText("Reached the limit!");
+					alert.showAndWait();
+				} else {
+					// Add song to queue list
+					list.queueSong(songToPlay);
+					curStud.setPlayedToday(curStud.getPlayedToday() + 1);
+					logFirts.setText(curStud.getPlayedToday() + "   " + curStud.updateTimeAllowed(songToPlay));
+
+					songsForList.add(songToPlay);
+					listViewSongs.refresh();
+				}
 			}
 		});
 	}
@@ -213,6 +204,8 @@ public class Iteration2Controller extends Application {
 
 	private void setup() {
 		// TODO Auto-generated method stub
+		listViewSongs = new ListView<Song>();
+		listViewSongs.setItems(songsForList);
 		labelTitle = new Label("Song List");
 		labelCurrPlay = new Label("Current Playlist");
 		howToPlay = new Label("Select then add to list");
@@ -226,10 +219,20 @@ public class Iteration2Controller extends Application {
 		logFirts = new Label("Login first");
 		currPlay = new Label("Waiting to queue song...");
 		logOut = new Button("Log out");
-		stud = new Student(name, passW);
+		curStud = new Student(name, passW);
 		studCollect = new StudentCollection();
 		album = new SongCollection();
 		list = new TrackList();
+		curStud = null;
+		songToPlay = null;
+	}
+
+	public static ObservableList<Song> getSongsForList() {
+		return songsForList;
+	}
+
+	public static ListView<Song> getListViewSongs() {
+		return listViewSongs;
 	}
 
 }

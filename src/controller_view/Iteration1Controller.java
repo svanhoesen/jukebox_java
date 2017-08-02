@@ -129,10 +129,10 @@ public class Iteration1Controller extends Application {
 				if (songCount < 3) {
 					list.queueSong(song);
 					songCount++;
-					logFirts.setText(list.size() + "   " + stud.getTimeAllowed(song));
+					logFirts.setText(list.size() + "   " + stud.updateTimeAllowed(song));
 				}
 				if (songCount == 3 || stud.canPlay() == false || song.canBePlayedToday() == false) {
-					logFirts.setText("3     " + stud.getTimeAllowed(song));
+					logFirts.setText("3     " + stud.updateTimeAllowed(song));
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setTitle("Message");
 					alert.setContentText("User has reached the limit!");
@@ -155,10 +155,10 @@ public class Iteration1Controller extends Application {
 				if (songCount < 3) {
 					list.queueSong(song);
 					songCount++;
-					logFirts.setText(list.size() + "   " + stud.getTimeAllowed(song));
+					logFirts.setText(list.size() + "   " + stud.updateTimeAllowed(song));
 				}
 				if (songCount == 3 || stud.canPlay() == false || song.canBePlayedToday() == false) {
-					logFirts.setText("3     " + stud.getTimeAllowed(song));
+					logFirts.setText("3     " + stud.updateTimeAllowed(song));
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setTitle("Message");
 					alert.setContentText("User has reached the limit!");

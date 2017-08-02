@@ -13,21 +13,21 @@ package tests;
 
 		@Test
 		public void testIDSetterAndGetter() {
-			Student student = new Student();
+			Student student = new Student(null, null);
 			student.setUserName("Chris");
 			assertEquals("Chris", student.getUserName());
 		}
 
 		@Test
 		public void testPasswordSetterAndGetter() {
-			Student student = new Student();
+			Student student = new Student(null, null);
 			student.setPassword("1");
 			assertEquals("1", student.getPassword());
 		}
 
 		@Test
 		public void testCanPlay() {
-			Student student = new Student();
+			Student student = new Student(null, null);
 			Song song = new Song("The Curtain Rises", 28, "Kevin MacLeod", baseDirect + "TheCurtainRises.mp3");
 			student.addPlayed(song);
 			student.addPlayed(song);
@@ -39,7 +39,7 @@ package tests;
 		
 		@Test
 		public void testCanPlayNewDay(){
-			Student student = new Student();
+			Student student = new Student(null, null);
 			Song song = new Song("Swing Cheese", 15, "FreePlay Music", baseDirect + "SwingCheese.mp3");
 			student.addPlayed(song);
 			student.addPlayed(song);

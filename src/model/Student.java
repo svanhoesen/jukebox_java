@@ -25,13 +25,8 @@ public class Student implements Serializable {
 	private String password;
 	LocalDate lastQueueTime;
 	private int timeAllowed;
+	private int playedToday;
 	private ArrayList<Song> hasBeenPlayedToday;
-
-	public Student() {
-		hasBeenPlayedToday = new ArrayList<Song>();
-		lastQueueTime = LocalDate.now();
-		timeAllowed = MAX_TIME;
-	}
 
 	public Student(String username, String password) {
 		this.userName = username;
@@ -39,6 +34,8 @@ public class Student implements Serializable {
 		hasBeenPlayedToday = new ArrayList<Song>();
 		lastQueueTime = LocalDate.now();
 		timeAllowed = MAX_TIME;
+		playedToday = 0;
+
 	}
 
 	public String getUserName() {
@@ -56,20 +53,19 @@ public class Student implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public int getTimeAllowed(){
+		return timeAllowed;
+	}
 
-	public String getTimeAllowed(Song song) {
+	public String updateTimeAllowed(Song song) {
+		timeAllowed -= song.getTime(); 
 
-		final int MINUTES_PER_HOUR = 60;
-		final int SECONDS_PER_MINUTE = 60;
-		System.out.println(song.getTitle() + "time of curr song");
-		int secSong = song.getTime();
-
-		int sec = (timeAllowed - secSong) % SECONDS_PER_MINUTE;
-		int totMin = (timeAllowed - secSong)/ SECONDS_PER_MINUTE;
-		int min = totMin % MINUTES_PER_HOUR;
-		int h = (totMin - secSong)/MINUTES_PER_HOUR;
+//		int h = usedTime % secSong;
+//		int min = usedTime % secSong;
+//		int sec = secSong / 60;
 		
-		return ""+ h + ":" + min + ":" + sec;
+		return ""+timeAllowed;//""+ h + ":" + min + ":" + sec;
 	}
 
 	public void addPlayed(Song song) {
@@ -95,6 +91,14 @@ public class Student implements Serializable {
 		else {
 			lastQueueTime = LocalDate.now().plusDays(1);
 		}
+	}
+
+	public int getPlayedToday() {
+		return playedToday;
+	}
+
+	public void setPlayedToday(int playedToday) {
+		this.playedToday = playedToday;
 	}
 	
 }
