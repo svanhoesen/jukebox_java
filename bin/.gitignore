@@ -1,4 +1,5 @@
-/persistence/
-/model/
 /controller_view/
+/demoMediaPlayer/
+/model/
+/persistence/
 /tests/
