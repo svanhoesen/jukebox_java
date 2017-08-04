@@ -152,6 +152,7 @@ public class Iteration3Controller extends Application {
 						// message.
 						outFile.writeObject(box.getTrackList());
 						outFile.writeObject(box.getStudentList());
+						outFile.writeObject(album);
 						outFile.close(); // Always close the output file!
 						primaryStage.close();
 					} catch (IOException ioe) {
@@ -173,6 +174,7 @@ public class Iteration3Controller extends Application {
 			ObjectInputStream inFile = new ObjectInputStream(rawBytes);
 			box.setTrackList((ArrayList<Song>) inFile.readObject());
 			box.setStudentList((HashMap<String, Student>) inFile.readObject());
+			album.recover((SongCollection) inFile.readObject());
 			inFile.close();
 		} catch (Exception e) {
 		}

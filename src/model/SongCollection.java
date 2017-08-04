@@ -48,12 +48,12 @@ public class SongCollection extends ArrayList<Song> implements TableModel, Seria
 
 	@Override
 	public int getColumnCount() {
-		return 3;
+		return 4;
 	}
 
 	@Override
 	public String getColumnName(int columnIndex) {
-		String[] columnName = { "Artist", "Title", "Seconds" };
+		String[] columnName = { "Plays", "Title", "Artist", "Seconds" };
 		return columnName[columnIndex];
 	}
 
@@ -74,9 +74,11 @@ public class SongCollection extends ArrayList<Song> implements TableModel, Seria
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Song currentSong = this.get(rowIndex);
 		if (columnIndex == 0)
-			return currentSong.getArtist();
+			return currentSong.getPlays();
 		else if (columnIndex == 1)
 			return currentSong.getTitle();
+		else if (columnIndex == 2)
+			return currentSong.getArtist();
 		else
 			return currentSong.getTime();
 	}
