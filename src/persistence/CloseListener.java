@@ -17,7 +17,7 @@ import model.SongCollection;
 import model.Student;
 import model.JukeBox;
 
-public class WindowClose implements WindowListener{
+public class CloseListener implements WindowListener{
 
 	private JukeBox box = new JukeBox();
 	private SongCollection songCollection = new SongCollection();

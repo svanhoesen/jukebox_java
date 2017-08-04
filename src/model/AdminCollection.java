@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class AdminCollection extends HashMap<String, Student> implements Serializable {
 
 	public AdminCollection() {
-			
+		this.put("Admin", new Student("Admin", "123"));
 		}
 
 	public boolean validateAdmin(String userName, String password) {

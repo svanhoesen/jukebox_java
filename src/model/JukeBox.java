@@ -50,7 +50,7 @@ public class JukeBox extends Observable{
 		return studentList.get(userName);
 	}
 
-	public StudentCollection getUserList() {
+	public StudentCollection getStudentList() {
 		return studentList;
 	}
 
