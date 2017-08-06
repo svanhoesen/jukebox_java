@@ -1,15 +1,12 @@
 package model;
-/*
- * Author: Steffan Van Hoesen and Anthony Middleton
- * 
- * Class Admin: This is the class that handles the admin functions. 
- */
+
+/**
+  * Author: Steffan Van Hoesen and Anthony Middleton
+  * 
+  * Class Admin: This is the class that handles the admin functions. 
+  */
 import java.io.Serializable;
-/*
- * Author: Steffan Van Hoesen and Anthony Middleton
- * 
- * Class Student: This is the class student names. Contain all the information that a student should have.
- */
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import controller_view.SongView;
@@ -106,15 +103,11 @@ public class Admin extends Application implements Serializable {
 		primaryStage.show();
 	}
 	
-<<<<<<< HEAD
-	// Event handler for adding students
-=======
-	
 	public Stage getStage() {
 		return primaryStage;
 	}
 
->>>>>>> 6279233c1a3df128d0111fea1407348ab39fa6be
+	// Event handler for adding students
 	private void setUpHandlerAdd() {
 		buttonAdd.setOnAction(event -> {
 			name = textFieldAccn.getText();
