@@ -10,11 +10,6 @@ import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.LinkedList;
-
-<<<<<<< HEAD
-import controller_view.Iteration2Controller;
-=======
->>>>>>> ddfa535894b5ddbc1d1f8772fe12ca703db0518b
 import controller_view.Iteration3Controller;
 import controller_view.JukeBoxGUI;
 import javafx.scene.media.Media;
