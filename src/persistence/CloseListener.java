@@ -49,7 +49,7 @@ public class CloseListener implements WindowListener{
 				ObjectOutputStream outFile = new ObjectOutputStream(bytesToDisk);
 				// outFile understands the writeObject(Object o) message.
 				outFile.writeObject(box.getTrackList());
-				outFile.writeObject(box.getUserList());
+//				outFile.writeObject(box.getUserList());
 				outFile.writeObject(songCollection);
 				outFile.close(); // Always close the output file!
 				System.exit(0);
