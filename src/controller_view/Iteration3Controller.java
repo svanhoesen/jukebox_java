@@ -5,12 +5,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
-import javax.swing.JOptionPane;
+import com.sun.org.glassfish.external.statistics.Statistic;
+import com.sun.xml.internal.bind.v2.model.core.ID;
+
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,7 +21,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -29,7 +32,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import model.JukeBox;
+import model.Admin;
+import model.AdminCollection;
 import model.Song;
 import model.SongCollection;
 import model.Student;
@@ -40,10 +44,9 @@ public class Iteration3Controller extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
-
 	}
 
-	private SongView songViewer;
+	private static SongView songViewer;
 	private Button buttonGo;
 	private Label accontName;
 	private Label pasword;
@@ -62,6 +65,8 @@ public class Iteration3Controller extends Application {
 	private Student curStud;
 	private StudentCollection studCollect;
 	private SongCollection album;
+	private AdminCollection adminCollect;
+	private Admin admin;
 	private Song songToPlay;
 	private TrackList list;
 	private static ObservableList<Song> songsForList = FXCollections.observableArrayList();
@@ -69,17 +74,18 @@ public class Iteration3Controller extends Application {
 	private String remainingTime = "";
 	private int usedTime;
 	private int userPlays = 0;
-	private JukeBox box = new JukeBox();
+	private Song selectedSong;
+	private boolean isStudent;
+	private boolean isAdmin;
+	private boolean isAdimPlay;
+	
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-
-		int decision = JOptionPane.showConfirmDialog(null, "Recover Last Stage?");
-		if (decision == JOptionPane.YES_OPTION)
-			readInputFile();
-		
-		Platform.setImplicitExit(false);
 		setup();
+
+		handleLoadIn();
+
 		BorderPane all = new BorderPane();
 		GridPane grid = new GridPane();
 		grid.setPadding(new Insets(10, 10, 10, 10));
@@ -131,67 +137,53 @@ public class Iteration3Controller extends Application {
 
 		GridPane.setConstraints(listViewSongs, 2, 6);
 		grid.getChildren().add(listViewSongs);
-
 		// action methods
-		login();
+		login(primaryStage);
+		handleSave(primaryStage);
 		setUpHandler();
 		logOut();
+
 		all.setCenter(grid);
 
 		// Don't forget to show the running application:
 		primaryStage.show();
+	}
 
+	private void handleLoadIn() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Start Up Option");
+		alert.setHeaderText("Start with saved state?");
+		alert.setContentText("Press ok load saved state.");
+		Optional<ButtonType> result = alert.showAndWait();
+
+		// TODO: Either read the saved student collection or start with default
+		if (result.get().equals(ButtonType.OK)) {
+			readCollection();
+		}
+	}
+
+	private void handleSave(Stage primaryStage) {
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			public void handle(WindowEvent we) {
-				int decision = JOptionPane.showConfirmDialog(null, "Save Current Stage?");
-				if (decision == JOptionPane.YES_OPTION) {
-					try {
-						FileOutputStream bytesToDisk = new FileOutputStream("myPlayList");
-						ObjectOutputStream outFile = new ObjectOutputStream(bytesToDisk);
-						// outFile understands the writeObject(Object o)
-						// message.
-						outFile.writeObject(box.getTrackList());
-						outFile.writeObject(box.getStudentList());
-						outFile.writeObject(album);
-						outFile.close(); // Always close the output file!
-						primaryStage.close();
-					} catch (IOException ioe) {
-						System.out.println("Writing objects failed");
-					}
-
-				} else if (decision == JOptionPane.NO_OPTION)
-					System.exit(0);
+				// Write the song collection to a file
+				writeCollection();
 			}
 		});
-//		primaryStage.close();
-
 	}
 
-	@SuppressWarnings("unchecked")
-	public void readInputFile() {
-		try {
-			FileInputStream rawBytes = new FileInputStream("myPlayList");
-			ObjectInputStream inFile = new ObjectInputStream(rawBytes);
-			box.setTrackList((ArrayList<Song>) inFile.readObject());
-			box.setStudentList((HashMap<String, Student>) inFile.readObject());
-			album.recover((SongCollection) inFile.readObject());
-			inFile.close();
-		} catch (Exception e) {
-		}
-
-	}
-
-	private void login() {
+	private void login(Stage primaryStage) {
 		login.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-
 				name = textFieldAccn.getText();
 				passW = textFieldPW.getText();
 
-				if (studCollect.validateStudent(name, passW)) {
+				if (studCollect.validateStudent(name, passW) && !name.equals("Admin")) {
 					curStud = studCollect.get(name);
 					logFirts.setText(curStud.getPlayedToday() + "       " + curStud.getTimeAllowed());
+					isStudent = true;
+				}else if (studCollect.validateStudent(name, passW) && name.equals("Admin")) {
+						isAdmin = true;
 				} else {
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setTitle("Message");
@@ -219,12 +211,13 @@ public class Iteration3Controller extends Application {
 			} else {
 				logFirts.setText(curStud.getPlayedToday() + "         " + curStud.getTimeAllowed());
 				// Determine which row is selected
-				Song selectedSong = (Song) songViewer.getSelectionModel().getSelectedItem();
+				selectedSong = (Song) songViewer.getSelectionModel().getSelectedItem();
 				// Pass the selected song
 				songToPlay = selectedSong;
-				// Get song length
+				// Set count of times song played
 				songToPlay.setPlays(songToPlay.getPlays() + 1);
 				songViewer.refresh();
+				// Check song played count
 				if (songToPlay.getPlays() > 3) {
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setTitle("Message");
@@ -234,7 +227,7 @@ public class Iteration3Controller extends Application {
 					// Add song to queue list
 					list.queueSong(songToPlay);
 					curStud.setPlayedToday(curStud.getPlayedToday() + 1);
-					logFirts.setText(curStud.getPlayedToday() + "   " + curStud.updateTimeAllowed(songToPlay));
+					logFirts.setText(curStud.getPlayedToday() + "      " + curStud.updateTimeAllowed(songToPlay));
 
 					songsForList.add(songToPlay);
 					listViewSongs.refresh();
@@ -247,6 +240,7 @@ public class Iteration3Controller extends Application {
 		logOut.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
+				writeCollection();
 				textFieldAccn.clear();
 				textFieldPW.clear();
 				logFirts.setText("Login first");
@@ -254,6 +248,44 @@ public class Iteration3Controller extends Application {
 				songCount = 0;
 			}
 		});
+	}
+
+	private void writeCollection() {
+		try {
+			FileOutputStream bytesToDisk = new FileOutputStream("persistentObjects");
+			ObjectOutputStream outFile = new ObjectOutputStream(bytesToDisk);
+			// Save the modified student and song collection
+			outFile.writeObject(studCollect);
+			outFile.writeObject(album);
+			outFile.writeObject(selectedSong);
+			outFile.writeObject(list);
+			outFile.writeObject(songToPlay);
+			outFile.writeObject(songsForList);
+			outFile.writeObject(listViewSongs);
+			outFile.close(); // Always close the output file!
+		} catch (IOException ioe) {
+			System.out.println(ioe);
+		}
+	}
+
+	private void readCollection() {
+		try {
+			FileInputStream rawBytes = new FileInputStream("persistentObjects");
+			ObjectInputStream inFile = new ObjectInputStream(rawBytes);
+			// Open the modified student and song collection
+			studCollect = (StudentCollection) inFile.readObject();// student
+																	// collection
+			album = (SongCollection) inFile.readObject();// song collection list
+			selectedSong = (Song) inFile.readObject();// selected song from song
+														// collection
+			list = (TrackList) inFile.readObject();// link list of songs to play
+			songToPlay = (Song) inFile.readObject();// current song to play
+			songsForList = (ObservableList<Song>) inFile.readObject();
+			listViewSongs = (ListView<Song>) inFile.readObject();
+			inFile.close(); // Always close the input file too! {
+		} catch (Exception e) {
+
+		}
 	}
 
 	private void setup() {
@@ -276,6 +308,8 @@ public class Iteration3Controller extends Application {
 		curStud = new Student(name, passW);
 		studCollect = new StudentCollection();
 		album = new SongCollection();
+		adminCollect = new AdminCollection();
+		admin = null;
 		list = new TrackList();
 		curStud = null;
 		songToPlay = null;
