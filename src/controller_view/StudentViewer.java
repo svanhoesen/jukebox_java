@@ -1,5 +1,11 @@
 package controller_view;
 
+/**
+  * Author: Steffan Van Hoesen and Anthony Middleton
+  * 
+  * Class StudentViewer: This is the class that handles the student list in the admin functions. 
+  */
+
 import java.io.Serializable;
 
 import javafx.collections.FXCollections;
