@@ -32,6 +32,9 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class Admin extends Application implements Serializable {
+	public Admin(){
+		
+	}
 
 	public static void main(String[] args) {
 		launch(args);
@@ -48,6 +51,7 @@ public class Admin extends Application implements Serializable {
 	private String name = "";
 	private String passW = "";
 	private StudentCollection studCollect;
+	private Stage primaryStage;
 
 	//sets up the admin popup window
 	@Override
@@ -102,7 +106,15 @@ public class Admin extends Application implements Serializable {
 		primaryStage.show();
 	}
 	
+<<<<<<< HEAD
 	// Event handler for adding students
+=======
+	
+	public Stage getStage() {
+		return primaryStage;
+	}
+
+>>>>>>> 6279233c1a3df128d0111fea1407348ab39fa6be
 	private void setUpHandlerAdd() {
 		buttonAdd.setOnAction(event -> {
 			name = textFieldAccn.getText();
@@ -155,5 +167,6 @@ public class Admin extends Application implements Serializable {
 		new Label("Waiting to queue song...");
 		studCollect = new StudentCollection();
 	}
+
 
 }

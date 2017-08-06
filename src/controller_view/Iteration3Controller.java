@@ -139,6 +139,11 @@ public class Iteration3Controller extends Application {
 		grid.getChildren().add(listViewSongs);
 		// action methods
 		login(primaryStage);
+		if (isStudent == true) {
+			primaryStage = primaryStage;
+		} else if (isAdmin == true){
+			primaryStage = admin.getStage();
+		}
 		handleSave(primaryStage);
 		setUpHandler();
 		logOut();
