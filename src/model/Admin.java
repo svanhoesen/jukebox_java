@@ -28,6 +28,9 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class Admin extends Application implements Serializable {
+	public Admin(){
+		
+	}
 
 	public static void main(String[] args) {
 		launch(args);
@@ -44,6 +47,7 @@ public class Admin extends Application implements Serializable {
 	private String name = "";
 	private String passW = "";
 	private StudentCollection studCollect;
+	private Stage primaryStage;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -95,6 +99,11 @@ public class Admin extends Application implements Serializable {
 
 		// Don't forget to show the running application:
 		primaryStage.show();
+	}
+	
+	
+	public Stage getStage() {
+		return primaryStage;
 	}
 
 	private void setUpHandlerAdd() {
@@ -148,5 +157,6 @@ public class Admin extends Application implements Serializable {
 		new Label("Waiting to queue song...");
 		studCollect = new StudentCollection();
 	}
+
 
 }
