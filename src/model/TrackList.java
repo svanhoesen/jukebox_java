@@ -11,7 +11,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import controller_view.Iteration2Controller;
+import controller_view.Iteration3Controller;
 import controller_view.JukeBoxGUI;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -41,8 +41,8 @@ public class TrackList extends ArrayList<Song> implements Serializable {
 	private class EndOfSongHandler implements Runnable {
 		@Override
 		public void run() {
-			Iteration2Controller.getSongsForList().remove(list.peek());
-			Iteration2Controller.getListViewSongs().refresh();
+			Iteration3Controller.getSongsForList().remove(list.peek());
+			Iteration3Controller.getListViewSongs().refresh();
 			list.remove();
 			if (!list.isEmpty())
 				playSong(list.peek());
