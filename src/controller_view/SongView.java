@@ -1,5 +1,7 @@
 package controller_view;
 
+import java.io.Serializable;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
@@ -8,7 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import model.Song;
 import model.SongCollection;
 
-public class SongView extends TableView {
+public class SongView extends TableView implements Serializable{
 
 	private ObservableList<Song> song;
 	private SongCollection songCollection;
