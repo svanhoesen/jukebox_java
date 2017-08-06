@@ -16,7 +16,7 @@ public class AdminCollection extends HashMap<String, Student> implements Seriali
 	private static final long serialVersionUID = -3771200739228547925L;
 
 	public AdminCollection() {
-		this.put("Admin", new Student("Admin", "1234"));
+		this.put("Alex", new Student("Alex", "12345"));
 	}
 
 	public boolean validateAdmin(String userName, String password) {
