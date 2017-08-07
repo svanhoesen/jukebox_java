@@ -28,15 +28,15 @@ public class StudentCollection extends HashMap<String, Student> implements Seria
 		this.put("Ryan", new Student("Ryan", "4444"));
 		this.put("Admin", new Student("Admin", "1234"));
 	}
-	
+	//allows for the admin to be add another student
 	public void studAdd(String name, String passW){
 		this.put(name, new Student(name, passW));
 	}
-	
+	//allows for the admin to be add another student
 	public void studRemove(String name){
 		this.remove(name);
 	}
-
+	//validates the current login info
 	public boolean validateStudent(String userName, String password) {
 		return get(userName).getPassword().equals(password);
 	}

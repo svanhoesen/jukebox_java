@@ -28,47 +28,48 @@ public class Song implements Serializable{
 		this.plays = 0;
 		this.lastDate = new GregorianCalendar();
 	}
-
+	// Sets the amount of times the song has been played
 	public void setPlays(int plays) {
 		this.plays = plays;
 	}
-	
+	//Gets the title of the song
 	public String getTitle() {
 		return title;
 	}
-
+	//gets the name of the song's artist 
 	public String getArtist() {
 		return artist;
 	}
-
+	// gets the duration of the song
 	public int getTime() {
 		return seconds;
 	}
-
+	// sets the the location of where the song  is stored.
 	public String getLocation() {
 		return fileName;
 	}
-	
+	// gets the number of times the song has been played.
 	public int getPlays(){
 		return plays;
 	}
-
+	// updates the last time the song was played to the current time and date, 
+	// and the number of times the song was played is incremented up by 1.
 	public void PlayMe() {
 		this.curDate = new GregorianCalendar(GregorianCalendar.YEAR, GregorianCalendar.MONTH,
 				GregorianCalendar.DAY_OF_MONTH);
 		lastDate = curDate;
 		plays++;
 	}
-
+	// checks the remaining number of times that a song can be played
 	public int timePlayedToday() {
 		return maxPlay - plays;
 	}
-
+	// moves up the date by 1; therefore resetting the amount of times a song can be played.
 	public void pretendItsTomorrow() {
 		lastDate.add(Calendar.DATE, 1);
 		plays = maxPlay;
 	}
-
+	//checks if the song can be played on the current date.
 	public boolean canBePlayedToday() {
 		if (plays == 3) {
 			return false;
