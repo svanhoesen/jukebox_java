@@ -1,11 +1,11 @@
 package model;
 
 import java.io.Serializable;
-/*
- * Author: Steffan Van Hoesen and Anthony Middleton
- * 
- * Class StudentCollection: This is the class student names. Contain all the information that a student should have.
- */
+/**
+  * Author: Steffan Van Hoesen and Anthony Middleton
+  * 
+  * Class AdminCollection: Contains the login information for the current set of admins.
+  */
 import java.util.HashMap;
 
 public class AdminCollection extends HashMap<String, Student> implements Serializable{
@@ -18,7 +18,15 @@ public class AdminCollection extends HashMap<String, Student> implements Seriali
 	public AdminCollection() {
 		this.put("Alex", new Student("Alex", "12345"));
 	}
-
+	//allows for the admin to be add another admin
+	public void adminAdd(String name, String passW){
+		this.put(name, new Student(name, passW));
+	}
+	// allows for the admin to be remove another admin
+	public void adminRemove(String name){
+		this.remove(name);
+	}
+	//validates the current login info
 	public boolean validateAdmin(String userName, String password) {
 		return get(userName).getPassword().equals(password);
 	}
