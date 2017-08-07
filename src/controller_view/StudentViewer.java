@@ -23,13 +23,12 @@ public class StudentViewer extends TableView implements Serializable{
   
   @SuppressWarnings("unchecked")
   public StudentViewer() {
-    
     // Add columns and rows 
     TableColumn<Student, String> name = new TableColumn<>("Name");
-    TableColumn<Student, Double> pw = new TableColumn<>("Password");
+    TableColumn<Student, String> pw = new TableColumn<>("Password");
     
     name.setCellValueFactory(new PropertyValueFactory<Student, String>("name"));
-    pw.setCellValueFactory(new PropertyValueFactory<Student, Double>("pw"));
+    pw.setCellValueFactory(new PropertyValueFactory<Student, String>("pw"));
     
     this.getColumns().addAll(name, pw);
     

@@ -78,6 +78,7 @@ public class Iteration3Controller extends Application {
 	private boolean isStudent;
 	private boolean isAdmin;
 	private boolean isAdimPlay;
+	private Stage primaryS;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -86,13 +87,14 @@ public class Iteration3Controller extends Application {
 		handleLoadIn();
 
 		BorderPane all = new BorderPane();
+
+		Scene scene = new Scene(all, 700, 600);
+		primaryStage.setScene(scene);
+		
 		GridPane grid = new GridPane();
 		grid.setPadding(new Insets(10, 10, 10, 10));
 		grid.setVgap(5);
 		grid.setHgap(5);
-
-		Scene scene = new Scene(all, 700, 600);
-		primaryStage.setScene(scene);
 
 		GridPane.setConstraints(accontName, 0, 0);
 		grid.getChildren().add(accontName);
@@ -138,16 +140,13 @@ public class Iteration3Controller extends Application {
 		grid.getChildren().add(listViewSongs);
 		// action methods
 		login();
-		if (isAdmin == true) {
-			primaryStage = admin.getStage();
-		}
 		handleSave(primaryStage);
 		setUpHandler();
 		logOut();
 
 		all.setCenter(grid);
 
-		// Don't forget to show the running application:
+		// Don't forget to show the running application: 
 		primaryStage.show();
 	}
 
@@ -161,6 +160,27 @@ public class Iteration3Controller extends Application {
 		// TODO: Either read the saved student collection or start with default
 		if (result.get().equals(ButtonType.OK)) {
 			readCollection();
+		}
+	}
+
+	private void handleAdminPage() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Load User Page");
+		alert.setHeaderText("Do you want to make admin changes?");
+		alert.setContentText("Press ok load admin page.");
+		Optional<ButtonType> result = alert.showAndWait();
+
+		// TODO: Either read the saved student collection or start with default
+		if (result.get().equals(ButtonType.OK)) {
+			try {
+				admin.start(primaryS);
+				primaryS.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else{
+			curStud = studCollect.get(name);
+			logFirts.setText(curStud.getPlayedToday() + "       " + curStud.getTimeAllowed());
 		}
 	}
 
@@ -180,9 +200,10 @@ public class Iteration3Controller extends Application {
 				name = textFieldAccn.getText();
 				passW = textFieldPW.getText();
 
-				if (adminCollect.validateAdmin(name, passW)) {
-					isAdmin = true;
-				} else if (studCollect.validateStudent(name, passW)) {
+				if (studCollect.validateStudent(name, passW) && name.equals("Admin")) {
+					handleAdminPage();
+				} else 
+					if (studCollect.validateStudent(name, passW)) {
 					curStud = studCollect.get(name);
 					logFirts.setText(curStud.getPlayedToday() + "       " + curStud.getTimeAllowed());
 					isStudent = true;
@@ -317,6 +338,7 @@ public class Iteration3Controller extends Application {
 		list = new TrackList();
 		curStud = null;
 		songToPlay = null;
+		primaryS = new Stage();
 	}
 
 	public static ObservableList<Song> getSongsForList() {

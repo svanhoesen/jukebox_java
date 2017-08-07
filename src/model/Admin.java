@@ -38,6 +38,7 @@ public class Admin extends Application implements Serializable {
 	}
 
 	private StudentViewer studentViewer;
+	private StudentCollection studCollect;
 	private Button buttonAdd;
 	private Button buttonRemove;
 	private Label accontName;
@@ -47,7 +48,6 @@ public class Admin extends Application implements Serializable {
 	private Label labelTitle;
 	private String name = "";
 	private String passW = "";
-	private StudentCollection studCollect;
 	private Stage primaryStage;
 
 	//sets up the admin popup window
@@ -92,8 +92,11 @@ public class Admin extends Application implements Serializable {
 		GridPane.setConstraints(studentViewer, 0, 6);
 		grid.getChildren().add(studentViewer);
 
-		studentViewer.refresh();
-
+	      // Show that a change to the Student object in the ObserverableList
+	      // also change the Student object in StudentCollection.
+	      StudentCollection studentCollection = studentViewer.getList();
+	      System.out.println(studentCollection.get(0));	 
+	      
 		// action methods
 		setUpHandlerAdd();
 		setUpHandlerRemove();
