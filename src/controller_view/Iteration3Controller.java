@@ -78,7 +78,6 @@ public class Iteration3Controller extends Application {
 	private boolean isStudent;
 	private boolean isAdmin;
 	private boolean isAdimPlay;
-	
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -138,10 +137,8 @@ public class Iteration3Controller extends Application {
 		GridPane.setConstraints(listViewSongs, 2, 6);
 		grid.getChildren().add(listViewSongs);
 		// action methods
-		login(primaryStage);
-		if (isStudent == true) {
-			primaryStage = primaryStage;
-		} else if (isAdmin == true){
+		login();
+		if (isAdmin == true) {
 			primaryStage = admin.getStage();
 		}
 		handleSave(primaryStage);
@@ -176,19 +173,19 @@ public class Iteration3Controller extends Application {
 		});
 	}
 
-	private void login(Stage primaryStage) {
+	private void login() {
 		login.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 				name = textFieldAccn.getText();
 				passW = textFieldPW.getText();
 
-				if (studCollect.validateStudent(name, passW) && !name.equals("Admin")) {
+				if (adminCollect.validateAdmin(name, passW)) {
+					isAdmin = true;
+				} else if (studCollect.validateStudent(name, passW)) {
 					curStud = studCollect.get(name);
 					logFirts.setText(curStud.getPlayedToday() + "       " + curStud.getTimeAllowed());
 					isStudent = true;
-				}else if (studCollect.validateStudent(name, passW) && name.equals("Admin")) {
-						isAdmin = true;
 				} else {
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setTitle("Message");
@@ -280,7 +277,9 @@ public class Iteration3Controller extends Application {
 			// Open the modified student and song collection
 			studCollect = (StudentCollection) inFile.readObject();// student
 																	// collection
-			album = (SongCollection) inFile.readObject();// song collection list
+			album.recover((SongCollection) inFile.readObject());// song
+																// collection
+																// list
 			selectedSong = (Song) inFile.readObject();// selected song from song
 														// collection
 			list = (TrackList) inFile.readObject();// link list of songs to play
