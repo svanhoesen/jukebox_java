@@ -1,5 +1,7 @@
 package controller_view;
 
+import java.io.Serializable;
+
 import com.sun.org.glassfish.external.statistics.Statistic;
 import com.sun.xml.internal.bind.v2.model.core.ID;
 
@@ -28,7 +30,7 @@ import model.Student;
 import model.StudentCollection;
 import model.TrackList;
 
-public class Iteration2Controller extends Application {
+public class Iteration2Controller extends Application implements Serializable{
 
 	public static void main(String[] args) {
 		launch(args);

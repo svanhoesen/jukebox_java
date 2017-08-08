@@ -41,6 +41,8 @@ public class StudentViewer extends TableView implements Serializable{
     students = FXCollections.observableArrayList();
     for(int i = 0; i < studentCollection.size(); i++) {
       students.add(studentCollection.get(i));
+      System.out.println(studentCollection.get(0));	 
+
     }
     this.setItems(students);
 

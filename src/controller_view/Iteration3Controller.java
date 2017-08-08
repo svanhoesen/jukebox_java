@@ -1,15 +1,15 @@
 package controller_view;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import com.sun.org.glassfish.external.statistics.Statistic;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -23,24 +23,23 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.Admin;
-import model.AdminCollection;
 import model.Song;
 import model.SongCollection;
 import model.Student;
 import model.StudentCollection;
 import model.TrackList;
 
-public class Iteration3Controller extends Application {
+public class Iteration3Controller extends Application implements Serializable {
 
 	public static void main(String[] args) {
 		launch(args);
@@ -65,20 +64,14 @@ public class Iteration3Controller extends Application {
 	private Student curStud;
 	private StudentCollection studCollect;
 	private SongCollection album;
-	private AdminCollection adminCollect;
 	private Admin admin;
 	private Song songToPlay;
 	private TrackList list;
 	private static ObservableList<Song> songsForList = FXCollections.observableArrayList();
 	private static ListView<Song> listViewSongs;
-	private String remainingTime = "";
-	private int usedTime;
-	private int userPlays = 0;
 	private Song selectedSong;
-	private boolean isStudent;
-	private boolean isAdmin;
-	private boolean isAdimPlay;
 	private Stage primaryS;
+	private Path temp = new Path();
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -88,9 +81,9 @@ public class Iteration3Controller extends Application {
 
 		BorderPane all = new BorderPane();
 
-		Scene scene = new Scene(all, 700, 600);
+		Scene scene = new Scene(all, 780, 500);
 		primaryStage.setScene(scene);
-		
+
 		GridPane grid = new GridPane();
 		grid.setPadding(new Insets(10, 10, 10, 10));
 		grid.setVgap(5);
@@ -146,7 +139,7 @@ public class Iteration3Controller extends Application {
 
 		all.setCenter(grid);
 
-		// Don't forget to show the running application: 
+		// Don't forget to show the running application:
 		primaryStage.show();
 	}
 
@@ -160,6 +153,7 @@ public class Iteration3Controller extends Application {
 		// TODO: Either read the saved student collection or start with default
 		if (result.get().equals(ButtonType.OK)) {
 			readCollection();
+//			songsForList = read(temp);
 		}
 	}
 
@@ -178,7 +172,7 @@ public class Iteration3Controller extends Application {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} else{
+		} else {
 			curStud = studCollect.get(name);
 			logFirts.setText(curStud.getPlayedToday() + "       " + curStud.getTimeAllowed());
 		}
@@ -189,6 +183,7 @@ public class Iteration3Controller extends Application {
 			public void handle(WindowEvent we) {
 				// Write the song collection to a file
 				writeCollection();
+//				write(songsForList);
 			}
 		});
 	}
@@ -202,11 +197,9 @@ public class Iteration3Controller extends Application {
 
 				if (studCollect.validateStudent(name, passW) && name.equals("Admin")) {
 					handleAdminPage();
-				} else 
-					if (studCollect.validateStudent(name, passW)) {
+				} else if (studCollect.validateStudent(name, passW)) {
 					curStud = studCollect.get(name);
 					logFirts.setText(curStud.getPlayedToday() + "       " + curStud.getTimeAllowed());
-					isStudent = true;
 				} else {
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setTitle("Message");
@@ -291,6 +284,7 @@ public class Iteration3Controller extends Application {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void readCollection() {
 		try {
 			FileInputStream rawBytes = new FileInputStream("persistentObjects");
@@ -313,6 +307,36 @@ public class Iteration3Controller extends Application {
 		}
 	}
 
+	private static void write(ObservableList<Song> songsListOb) {
+		try {
+			// write object to file
+			FileOutputStream fos = new FileOutputStream("persistentObjects");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(new ArrayList<Song>(songsListOb));
+			oos.close();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static ObservableList<Song> read(Path file) {
+		try {
+			FileInputStream in = new FileInputStream("persistentObjects");
+			ObjectInputStream ois = new ObjectInputStream(in);
+			List<Song> list = (List<Song>) ois.readObject();
+
+			return FXCollections.observableList(list);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return FXCollections.emptyObservableList();
+	}
+
 	private void setup() {
 		// TODO Auto-generated method stub
 		listViewSongs = new ListView<Song>();
@@ -333,7 +357,6 @@ public class Iteration3Controller extends Application {
 		curStud = new Student(name, passW);
 		studCollect = new StudentCollection();
 		album = new SongCollection();
-		adminCollect = new AdminCollection();
 		admin = null;
 		list = new TrackList();
 		curStud = null;

@@ -58,4 +58,12 @@ public class TrackList extends ArrayList<Song>implements Serializable {
 
 		mediaPlayer.setOnEndOfMedia(new EndOfSongHandler());
 	}
+
+	public LinkedList<Song> getList() {
+		return list;
+	}
+
+	public void setList(LinkedList<Song> list) {
+		this.list = list;
+	}
 }

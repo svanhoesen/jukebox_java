@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +14,7 @@ import demoMediaPlayer.EOSEvent;
 import demoMediaPlayer.EOSListener;
 import demoMediaPlayer.MediaPlayer;
 
-public class JukeBox extends Observable{
+public class JukeBox extends Observable implements Serializable{
 
 	public static String baseDirect = "songfiles/";
 	private String userName;

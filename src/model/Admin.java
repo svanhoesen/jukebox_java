@@ -49,21 +49,23 @@ public class Admin extends Application implements Serializable {
 	private String name = "";
 	private String passW = "";
 	private Stage primaryStage;
+	private ObservableList<Student> studentList = FXCollections.<Student>observableArrayList();
+    private ListView<Student> studentListView = new ListView<>(studentList);
 
 	//sets up the admin popup window
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-
 		setup();
 
 		BorderPane all = new BorderPane();
+		
+		Scene scene = new Scene(all, 500, 400);
+		primaryStage.setScene(scene);
+		
 		GridPane grid = new GridPane();
 		grid.setPadding(new Insets(10, 10, 10, 10));
 		grid.setVgap(5);
 		grid.setHgap(5);
-
-		Scene scene = new Scene(all, 500, 400);
-		primaryStage.setScene(scene);
 
 		GridPane.setConstraints(accontName, 0, 0);
 		grid.getChildren().add(accontName);
@@ -129,6 +131,7 @@ public class Admin extends Application implements Serializable {
 			}
 		});
 	}
+	
 	// Event handler for removing students
 	private void setUpHandlerRemove() {
 		buttonRemove.setOnAction(event -> {
